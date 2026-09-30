@@ -1,0 +1,10 @@
+{
+  "name": "My Deen Companion — میرا دین کا ساتھی",
+  "short_name": "My Deen Companion",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f7f1e1",
+  "theme_color": "#0f4d3a",
+  "lang": "ur",
+  "dir": "rtl"
+}
