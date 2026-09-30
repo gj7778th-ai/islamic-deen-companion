@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="ur">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="manifest.webmanifest" rel="manifest"/>
+<title>My Deen Companion — میرا دین کا ساتھی</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Jost:wght@400;500;600;700&display=swap');
+
+  :root{
+    --parchment:#f7f1e1;
+    --parchment-dark:#efe4c7;
+    --ink:#26301f;
+    --emerald:#0f4d3a;
+    --emerald-deep:#0a3628;
+    --gold:#b6862c;
+    --gold-bright:#d9a53c;
+    --brick:#9c3b2e;
+    --line:#c9b98a;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 15% 10%, rgba(182,134,44,.10), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(15,77,58,.10), transparent 45%),
+      var(--parchment);
+    color:var(--ink);
+    font-family:'Jost', sans-serif;
+    min-height:100vh;
+  }
+
+  .urdu{font-family:'Noto Nastaliq Urdu', serif; direction:rtl; line-height:2.4; font-size:1.15rem;}
+  .arabic{font-family:'Amiri', serif; direction:rtl; font-size:1.55rem; line-height:2.5; color:var(--emerald-deep); font-weight:700;}
+  .arabic-sm{font-family:'Amiri', serif; direction:rtl; font-size:1.25rem; color:var(--emerald-deep); font-weight:700;}
+
+  header{
+    background:linear-gradient(160deg, var(--emerald) 0%, var(--emerald-deep) 100%);
+    color:var(--parchment);
+    padding:2.6rem 1.5rem 3.4rem;
+    position:relative;
+    overflow:hidden;
+    text-align:center;
+  }
+  header::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(214,168,66,.06) 0 2px, transparent 2px 26px),
+      repeating-linear-gradient(-45deg, rgba(214,168,66,.06) 0 2px, transparent 2px 26px);
+    pointer-events:none;
+  }
+  header .crest{
+    font-size:2.2rem; color:var(--gold-bright); margin-bottom:.4rem; letter-spacing:.15rem;
+  }
+  header h1{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:700;
+    font-size:clamp(1.45rem, 3.8vw, 2.25rem);
+    margin:.2rem 0 .1rem;
+    letter-spacing:.02em;
+  }
+  header h1 .ur{font-family:'Noto Nastaliq Urdu', serif; font-size:1.08em; display:block; margin-bottom:.35rem;}
+  header p.sub{
+    max-width:640px; margin:.3rem auto 0; color:#d9ecdf; font-size:.82rem; line-height:1.4;
+  }
+  header .rule{
+    width:80px; height:2px; margin:.55rem auto 0; background:var(--gold-bright); opacity:.8;
+  }
+
+  /* Compact navigation: keeps topic names readable without consuming the screen. */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:var(--emerald-deep);
+    border-bottom:2px solid var(--gold);
+    display:flex; flex-wrap:nowrap; justify-content:flex-start; align-items:center; gap:.28rem;
+    padding:.3rem .4rem;
+    overflow-x:auto; overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;
+  }
+  nav button{
+    flex:0 0 auto;
+    font-family:'Jost', sans-serif;
+    font-weight:600;
+    font-size:.76rem;
+    line-height:1.15;
+    background:transparent;
+    color:#cfe4d6;
+    border:1px solid rgba(214,168,66,.35);
+    padding:.28rem .58rem;
+    min-height:30px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:all .2s ease;
+    outline:none;
+    -webkit-tap-highlight-color:transparent;
+    white-space:nowrap;
+  }
+  nav button.home-tab{
+    position:sticky; left:0; z-index:2;
+    background:var(--gold-bright); color:var(--emerald-deep);
+    border-color:var(--gold-bright);
+    font-weight:800;
+    box-shadow:3px 0 7px rgba(0,0,0,.22);
+  }
+  nav button:focus, nav button:focus-visible{
+    outline:2px solid var(--gold-bright);
+    outline-offset:2px;
+  }
+  nav button.active, nav button:hover{
+    background:var(--gold-bright);
+    color:var(--emerald-deep);
+    border-color:var(--gold-bright);
+  }
+
+  main{max-width:880px; margin:0 auto; padding:1.25rem 1.2rem 5rem;}
+
+  /* The large title/header is useful only on Home. Once a topic is selected it disappears. */
+  body.topic-open > header{display:none;}
+  body.topic-open main{padding-top:1.15rem;}
+
+  .welcome-hero{
+    text-align:center; padding:.7rem .8rem 1.15rem; border-bottom:3px double var(--gold); margin-bottom:1.1rem;
+  }
+  .welcome-hero .big-ar{font-family:'Amiri', serif; direction:rtl; font-size:1.55rem; color:var(--emerald-deep); font-weight:700; margin-bottom:.6rem;}
+  .welcome-hero p{max-width:560px; margin:.6rem auto 0; color:#4a4330; line-height:1.7;}
+  .welcome-hero p.ur{font-size:1.15rem;}
+  .author-note{
+    background:#fffdf6; border:1px dashed var(--gold); border-radius:10px;
+    padding:1rem 1.2rem; margin:0 0 1.8rem; font-size:.95rem; color:#4a4330;
+  }
+  .author-note .sign{margin-top:.6rem; font-style:italic; color:var(--brick); font-weight:600;}
+
+  section.panel{display:none;}
+  section.panel.active{display:block; animation:fadein .35s ease;}
+  @keyframes fadein{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
+
+  .panel-head{
+    display:flex; align-items:baseline; justify-content:space-between; gap:1rem;
+    border-bottom:3px double var(--gold);
+    padding-bottom:.6rem; margin-bottom:1.6rem;
+    flex-wrap:wrap;
+  }
+  .panel-head h2{
+    font-family:'Cormorant Garamond', serif; font-weight:700; color:var(--emerald-deep);
+    font-size:clamp(1.5rem,3.5vw,2.1rem); margin:0;
+  }
+  .panel-head .ur-title{font-family:'Noto Nastaliq Urdu', serif; color:var(--brick); font-size:1.4rem;}
+
+  .intro-note{
+    background:var(--parchment-dark);
+    border-inline-start:5px solid var(--gold);
+    padding:.9rem 1.1rem; margin-bottom:1.6rem; border-radius:4px;
+    font-size:.95rem; color:#4a4330;
+  }
+  .intro-note .ur{font-size:1.05rem;}
+
+  .step{
+    display:grid;
+    grid-template-columns:56px 1fr;
+    gap:0 1rem;
+    margin-bottom:1.5rem;
+    background:#fffdf6;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:1.1rem 1.2rem 1.2rem;
+    box-shadow:0 2px 0 rgba(15,77,58,.06);
+  }
+  .step-num{
+    grid-row:1 / -1;
+    grid-column:1;
+    width:44px; height:44px;
+    background:var(--emerald);
+    color:var(--gold-bright);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Cormorant Garamond', serif; font-weight:700; font-size:1.3rem;
+    border:2px solid var(--gold);
+  }
+  .step > *:not(.step-num){grid-column:2;}
+  .step-en{font-weight:600; color:var(--emerald-deep); font-size:1.02rem; margin-bottom:.3rem;}
+  .step-ur{margin-top:.15rem; color:var(--ink); font-family:'Noto Nastaliq Urdu', serif; direction:rtl; line-height:2.2; font-size:1.05rem; text-align:right;}
+  .step-ar{margin-top:.55rem; padding-top:.5rem; border-top:1px dashed var(--line);}
+  .step-note{margin-top:.4rem; font-size:.85rem; color:#7a7256; font-style:italic;}
+
+  .repeat-badge{
+    display:inline-block; margin-top:.4rem;
+    background:var(--brick); color:#fff; font-size:.78rem; font-weight:600;
+    padding:.15rem .6rem; border-radius:999px;
+  }
+
+  .dua-card{
+    background:linear-gradient(180deg,#fffef9,#faf4e2);
+    border:1px solid var(--gold);
+    border-radius:10px;
+    padding:1.1rem 1.3rem;
+    margin-bottom:1.2rem;
+    position:relative;
+  }
+  .dua-card::before{
+    content:"❖";
+    position:absolute; top:-14px; left:50%; transform:translateX(-50%);
+    background:var(--parchment); color:var(--gold); font-size:1.1rem; padding:0 .4rem;
+  }
+  .dua-label{font-weight:700; color:var(--brick); font-size:.9rem; text-transform:uppercase; letter-spacing:.06em; margin-bottom:.5rem;}
+  .dua-label .ur{font-size:1.05rem; text-transform:none; letter-spacing:0; display:inline;}
+
+  .subhead{
+    font-family:'Cormorant Garamond', serif; font-weight:700; color:var(--brick);
+    font-size:1.4rem; margin:2.2rem 0 1rem; display:flex; align-items:center; gap:.6rem;
+  }
+  .subhead::after{content:""; flex:1; height:2px; background:var(--line);}
+
+  .grid-two{display:grid; grid-template-columns:1fr; gap:1rem;}
+  @media(min-width:700px){.grid-two{grid-template-columns:1fr 1fr;}}
+
+  .tiny-card{
+    background:#fffdf6; border:1px solid var(--line); border-radius:8px; padding:.9rem 1rem;
+  }
+  .tiny-card h4{margin:0 0 .4rem; color:var(--emerald-deep); font-family:'Cormorant Garamond',serif; font-size:1.15rem;}
+
+  .issues-box{
+    margin-top:2.4rem;
+    background:linear-gradient(180deg,#fbf6e6,#f3ead0);
+    border:1px solid var(--gold);
+    border-radius:12px;
+    padding:1.3rem 1.4rem 1.5rem;
+  }
+  .issues-box h3{
+    font-family:'Cormorant Garamond', serif; color:var(--brick); font-size:1.3rem; margin:0 0 .3rem;
+    display:flex; align-items:center; gap:.5rem;
+  }
+  .issues-box h3 .ur{font-family:'Noto Nastaliq Urdu', serif; font-size:1.2rem; color:var(--brick);}
+  .issues-box ul{margin:.8rem 0 0; padding-inline-start:1.3rem;}
+  .issues-box li{margin-bottom:.75rem; line-height:1.5;}
+  .issues-box li .en{font-weight:600; color:var(--emerald-deep); display:block; margin-bottom:.15rem;}
+  .issues-box li .ur{display:block; margin-top:.1rem;}
+  .issues-box li::marker{color:var(--gold); font-size:1.1rem;}
+
+  .data-table-wrap{overflow-x:auto; margin-bottom:1.6rem; border:1px solid var(--gold); border-radius:10px;}
+  table.data-table{width:100%; border-collapse:collapse; font-size:.85rem; background:#fffdf6;}
+  table.data-table th, table.data-table td{padding:.5rem .6rem; border:1px solid var(--line); text-align:left; vertical-align:top;}
+  table.data-table th{background:var(--emerald); color:#fff; font-weight:600; position:sticky; top:0;}
+  table.data-table tr:nth-child(even) td{background:var(--parchment-dark);}
+
+  footer{
+    text-align:center; padding:2rem 1rem; color:#7a7256; font-size:.85rem;
+    border-top:1px solid var(--line);
+  }
+  footer .ur{font-size:1rem; margin-top:.3rem;}
+
+  ::selection{background:var(--gold-bright); color:var(--emerald-deep);}
+
+  #searchResults a{display:block;padding:.55rem .7rem;color:var(--emerald-deep);text-decoration:none;border-radius:7px;}
+  #searchResults a:hover{background:var(--parchment-dark);}
+  .highlight-search{outline:3px solid var(--gold-bright);}
+  @media(max-width:600px){#globalSearch{top:58px}.data-table{font-size:.78rem}}
+  @media print{nav,#globalSearch{display:none!important} section.panel{display:block!important;break-inside:avoid} header{color:#000;background:#fff;border-bottom:2px solid #000}}
+</style>
+<style>
+.evidence-card{margin:14px 0;padding:16px;border:1px solid #d9d1c3;border-radius:14px;background:#fffdf8}.evidence-card .source{font-size:.88rem;color:#6b6257;margin-top:8px}.evidence-card .arabic-evidence{font-family:"Amiri","Noto Naskh Arabic",serif;font-size:1.35rem;line-height:2.15;text-align:right;direction:rtl;padding:10px 0}.evidence-card .label{font-weight:700;margin-top:8px}.evidence-card .ur{direction:rtl;text-align:right;display:block}.bilingual-note{padding:14px 16px;border-radius:12px;background:#f5f1e8;border-left:4px solid #7b5b2e;margin:12px 0}.evidence-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px}
+</style>
+<style>
+  @media(max-width:600px){
+    header{padding:.7rem .55rem .6rem;}
+    header h1{font-size:1.55rem;}
+    header p.sub{font-size:.72rem;line-height:1.3;}
+    nav{padding:.24rem .3rem;gap:.22rem;}
+    nav button{font-size:.7rem;padding:.25rem .48rem;min-height:28px;}
+    #globalSearch{top:38px !important;margin-top:.55rem !important;}
+    main{padding:1rem .75rem 4rem;}
+    body.topic-open main{padding-top:.85rem;}
+  }
+</style>
+<style id="deen-final-typography">@import url("https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap");
+
+/* Final Deen Companion typography/layout standard */
+:root{--urdu-maroon:#7a1f3d;--arabic-green:#237a3b;--english:#24302b;--nav-bg:#f7f7f2;--nav-border:#d7d9d1}
+html,body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif!important;color:var(--english)}
+body{font-size:16px;line-height:1.62}
+.ur,.ur-title,.step-ur,.urdu,.bilingual-note .ur,[lang="ur"],[dir="rtl"]{font-family:"Noto Nastaliq Urdu","Noto Nastaliq", "Jameel Noori Nastaleeq",serif!important;color:var(--urdu-maroon)!important;line-height:2.0!important}
+.ur-title{font-size:.95em!important}
+.arabic,.arabic-sm,[lang="ar"],[dir="rtl"] .arabic{font-family:"Noto Naskh Arabic","Amiri","Traditional Arabic",serif!important;color:var(--arabic-green)!important;font-size:.90rem!important;line-height:1.9!important}
+.step-note,.en,.english,[lang="en"]{font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif!important;color:var(--english)!important}
+/* compact topic navigation */
+#tabs{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;gap:.32rem!important;padding:.38rem .45rem!important;position:sticky;top:0;z-index:50;background:rgba(255,255,255,.97);border-bottom:1px solid var(--nav-border);scrollbar-width:thin}
+#tabs button{flex:0 0 auto!important;white-space:nowrap!important;font-size:.78rem!important;line-height:1.15!important;padding:.42rem .62rem!important;min-height:32px!important;border-radius:999px!important}
+.nav-group-label{flex:0 0 auto!important;align-self:center!important;font-size:.68rem!important;font-weight:700!important;color:#53605a!important;padding:0 .25rem!important;letter-spacing:.02em}
+#tabs button.home-tab{font-weight:800!important}
+/* compact landing header */
+body.topic-open #welcome{display:none!important}
+body.topic-open .hero,body.topic-open .app-hero,body.topic-open .landing-hero{display:none!important}
+body.topic-open main{padding-top:.35rem!important}
+body.topic-open .panel.active{margin-top:.2rem!important}
+/* consistent panels */
+.panel-head h2{font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif!important}
+.panel-head .ur-title{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif!important;color:var(--urdu-maroon)!important}
+/* avoid oversized Arabic blocks */
+.dua-card .arabic,.dua-card .arabic-sm{font-size:.88rem!important}
+
+/* Override legacy inline typography so every language follows one standard */
+.panel .ur,.panel .ur-title,.panel .step-ur,.panel [lang="ur"],[dir="rtl"]{color:var(--urdu-maroon)!important;font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif!important}
+.panel .step-ur,.panel .ur{font-size:1rem!important}
+.panel .arabic,.panel .arabic-sm,[lang="ar"]{color:var(--arabic-green)!important;font-family:"Noto Naskh Arabic","Amiri",serif!important;font-size:.88rem!important}
+.panel .step-note,.panel .en{font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif!important;color:var(--english)!important;font-size:.96rem!important}
+
+/* final language typography — no inherited/inline overrides */
+.panel .ur,.panel .ur-title,.panel .step-ur,.panel [lang="ur"],[dir="rtl"]{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif!important;color:#7a1f3d!important;font-style:normal!important}
+.panel .step-note,.panel .en,.panel [lang="en"]{font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif!important;color:#24302b!important}
+.panel .arabic,.panel .arabic-sm,.panel [lang="ar"]{font-family:"Noto Naskh Arabic","Amiri","Traditional Arabic",serif!important;color:#237a3b!important;font-size:.86rem!important}
+.source-note{font-family:Inter,system-ui,sans-serif!important;font-size:.78rem;color:#5d685f;margin-top:.4rem}
+</style><style id="content-quality-pass">
+/* Content quality pass: one consistent reading system */
+:root{--urdu-maroon:#741f3a;--arabic-green:#237a3b;--english:#24302b;}
+body,body *{font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;}
+.ur,.urdu,.step-ur,.ur-title,[lang="ur"]{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq","Noto Nastaliq",serif!important;color:var(--urdu-maroon)!important;direction:rtl;text-align:right;line-height:2.15!important;}
+.arabic,.arabic-sm,.arabic-evidence,.step-ar,[lang="ar"]{font-family:"Noto Naskh Arabic","Amiri","Traditional Arabic",serif!important;color:var(--arabic-green)!important;font-size:.92rem!important;line-height:1.95!important;direction:rtl;}
+.en,.english,.step-en,.step-note,.intro-note,.tiny-card,section.panel p,section.panel li{font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif!important;color:var(--english);line-height:1.7;}
+.step-en,.step-ur{display:block;}
+.step-ur + .step-note{margin-top:.5rem;}
+.bilingual-pair{display:grid;grid-template-columns:1fr;gap:.35rem;margin:1rem 0;padding:.8rem 1rem;border:1px solid var(--line);border-radius:10px;background:#fffdf7;}
+.bilingual-pair .pair-en{order:1}.bilingual-pair .pair-ur{order:2;}
+.source-ref{margin-top:.65rem;padding:.55rem .75rem;border-left:3px solid var(--gold);background:#f8f3e6;font-size:.82rem;color:#655e4e;}
+.source-ref strong{color:var(--emerald-deep);}
+.source-derived{border-left:4px solid #6f7f73;background:#f4f6f2;padding:.85rem 1rem;border-radius:8px;margin:1rem 0;}
+.source-derived .source-title{font-weight:700;color:var(--emerald-deep);margin-bottom:.35rem;}
+/* Keep media exclusively in the Media & Resources chapter. */
+#media-guides{margin-top:2rem;}
+@media(max-width:600px){body{font-size:15.5px}.panel-head .ur-title{font-size:1.05rem!important}.arabic,.arabic-sm,.arabic-evidence,.step-ar{font-size:.86rem!important}}
+</style><style id="final-visual-system">
+/* FINAL VISUAL SYSTEM — unified typography, right-aligned topic headings, restrained colour emphasis */
+:root{
+  --urdu-maroon:#741f3a;
+  --arabic-green:#237a3b;
+  --english-ink:#24302b;
+  --heading-emerald:#17634f;
+  --heading-gold:#b07a18;
+  --important-red:#9b2c2c;
+  --important-blue:#285a8f;
+  --important-purple:#6b3b83;
+  --soft-gold:#fff7dc;
+  --soft-blue:#eef6ff;
+  --soft-maroon:#fff1f3;
+}
+/* One English font everywhere unless it is explicitly Arabic/Urdu. */
+body, body *:not(.ur):not(.urdu):not(.step-ur):not(.ur-title):not([lang="ur"]):not(.arabic):not(.arabic-sm):not(.arabic-evidence):not(.step-ar){
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif !important;
+}
+/* Urdu: always Nastaliq + maroon. */
+.ur,.urdu,.step-ur,.ur-title,[lang="ur"],[dir="rtl"]:not(.arabic):not(.arabic-sm):not(.arabic-evidence):not(.step-ar){
+  font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq","Noto Nastaliq",serif !important;
+  color:var(--urdu-maroon) !important;
+}
+/* Arabic: smaller, green, Naskh/Amiri. */
+.arabic,.arabic-sm,.arabic-evidence,.step-ar,[lang="ar"]{
+  font-family:"Noto Naskh Arabic","Amiri","Traditional Arabic",serif !important;
+  color:var(--arabic-green) !important;
+  direction:rtl;
+}
+.arabic,.arabic-evidence,.step-ar{font-size:.98rem !important;}
+.arabic-sm{font-size:.88rem !important;}
+/* Topic headings: consistently right aligned. */
+.panel-head{display:flex !important; flex-direction:column !important; align-items:flex-end !important; text-align:right !important; gap:.12rem !important;}
+.panel-head h2,.panel-head .ur-title{width:100% !important; text-align:right !important;}
+.panel-head h2{font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif !important; color:var(--heading-emerald) !important; font-weight:800 !important; letter-spacing:.01em;}
+.panel-head .ur-title{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif !important; color:var(--urdu-maroon) !important; font-weight:700 !important;}
+/* Subtopic headings are also aligned consistently, without changing body direction. */
+.subhead{font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif !important; text-align:right !important; color:var(--heading-emerald) !important; font-weight:800 !important;}
+.subhead .ur{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif !important; color:var(--urdu-maroon) !important;}
+/* All other headings use one English family; no stray old black serif headings. */
+h1,h2,h3,h4,h5,h6{font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif !important;}
+h1 .ur,h2 .ur,h3 .ur,h4 .ur,h5 .ur,h6 .ur{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif !important; color:var(--urdu-maroon) !important;}
+/* Important facts / warnings / evidence / checklists get visual emphasis. */
+strong,b,.en{color:var(--heading-emerald) !important;}
+.important,.key-point,.key,.must,.warning,.caution,.important-point{color:var(--important-red) !important;font-weight:800 !important;}
+.issues-box,.warning-box,.important-box,.key-box{border-left:4px solid var(--heading-gold) !important;background:var(--soft-gold) !important;}
+ul li::marker,ol li::marker{color:var(--heading-gold) !important;font-weight:800;}
+li{margin-bottom:.35rem;}
+/* Source/evidence notes visually distinct but still readable. */
+.step-note{color:var(--important-blue) !important;}
+.step-note .ur{color:var(--urdu-maroon) !important;}
+/* Tables/checklists: stronger headings and alternating emphasis. */
+th{font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif !important;}
+td .ur,th .ur{color:var(--urdu-maroon) !important;}
+/* Media belongs to one chapter only. */
+.media-slot,.media-grid{display:block;}
+#media-guides .media-slot{border-left:4px solid var(--heading-gold) !important;background:#fffaf0 !important;}
+</style>
+<style id="definitions-style">
+  #definitions-guide .definition-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-top:1rem}
+  #definitions-guide .definition-card{background:linear-gradient(145deg,#fffdf7,#f8f2e4);border:1px solid var(--line);border-left:5px solid var(--emerald);border-radius:12px;padding:1rem 1.1rem;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  #definitions-guide .definition-card h3{margin:0 0 .55rem;text-align:right;font-family:Inter,system-ui,sans-serif;color:var(--emerald-deep);font-size:1.05rem}
+  #definitions-guide .definition-card .term-en{font-weight:800;color:var(--emerald-deep);display:block;margin-bottom:.25rem}
+  #definitions-guide .definition-card .term-ur{font-family:'Noto Nastaliq Urdu','Jameel Noori Nastaleeq',serif;color:#741f3a;display:block;text-align:right;direction:rtl;font-size:1.02rem;line-height:1.8}
+  #definitions-guide .definition-card .ex-en{color:#263238;line-height:1.62;margin:.4rem 0}
+  #definitions-guide .definition-card .ex-ur{font-family:'Noto Nastaliq Urdu','Jameel Noori Nastaleeq',serif;color:#741f3a;direction:rtl;text-align:right;line-height:1.9;margin:.35rem 0}
+  #definitions-guide .definition-card .evidence{font-size:.78rem;color:#6b5a2b;border-top:1px dashed var(--gold);padding-top:.45rem;margin-top:.5rem}
+  #definitions-guide .definition-card.important{border-left-color:#9b6b00;background:linear-gradient(145deg,#fffaf0,#f5ead0)}
+  #definitions-guide .definition-card.warning{border-left-color:#8b2e3f;background:linear-gradient(145deg,#fff8f8,#f8ecef)}
+  #definitions-guide .definition-note{background:#eef7ef;border:1px solid #b8d5bd;border-radius:12px;padding:1rem;margin:1rem 0;color:#24452c}
+  #definitions-guide .definition-note .ur{color:#741f3a!important}
+</style>
+<style id="final-global-typography">
+/* FINAL GLOBAL TYPOGRAPHY + TEXT-PLATE SYSTEM */
+:root{
+  --en-text:#243746;
+  --en-heading:#165a63;
+  --ur-text:#741f3a;
+  --ur-heading:#741f3a;
+  --ar-text:#237a3b;
+  --plate-bg:#fffdf8;
+  --plate-border:#e4d6b5;
+  --plate-shadow:0 2px 8px rgba(70,50,20,.07);
+}
+html,body{direction:ltr!important;}
+body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif!important;color:var(--en-text);}
+/* English is ALWAYS LTR, even inside older RTL containers */
+body :not(.ur):not(.urdu):not(.step-ur):not(.ur-title):not([lang="ur"]):not([dir="rtl"]){direction:ltr;}
+.en,.english,[lang="en"]{direction:ltr!important;text-align:left!important;font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif!important;color:var(--en-text)!important;}
+/* Urdu is ALWAYS Nastaliq + RTL + maroon */
+.ur,.urdu,.step-ur,.ur-title,[lang="ur"]{direction:rtl!important;text-align:right!important;font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq","Noto Nastaliq",serif!important;color:var(--ur-text)!important;unicode-bidi:plaintext;}
+/* Arabic: RTL, green, slightly larger */
+.arabic,.arabic-sm,[lang="ar"]{direction:rtl!important;text-align:right!important;font-family:"Noto Naskh Arabic","Amiri","Scheherazade New",serif!important;color:var(--ar-text)!important;font-size:1.04em!important;line-height:2!important;unicode-bidi:plaintext;}
+/* Topic headings: consistent everywhere, right aligned */
+.panel-head,.panel-head h2,.panel-head .ur-title,.subhead,.section-title,.topic-title,.chapter-title,.card h2,.card h3,.card h4,.issues-box h3{
+  text-align:right!important;
+}
+.panel-head h2,.subhead,.section-title,.topic-title,.chapter-title,.card h2,.card h3,.card h4,.issues-box h3{
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif!important;
+  color:var(--en-heading)!important;
+  font-weight:750!important;
+  direction:ltr!important;
+}
+.panel-head .ur-title{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq","Noto Nastaliq",serif!important;color:var(--ur-heading)!important;font-weight:700!important;direction:rtl!important;}
+/* Paired Urdu/English headings retain their own script/color consistently */
+.subhead .ur,.section-title .ur,.topic-title .ur,.chapter-title .ur,.card h2 .ur,.card h3 .ur,.card h4 .ur,.issues-box h3 .ur{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq","Noto Nastaliq",serif!important;color:var(--ur-heading)!important;direction:rtl!important;text-align:right!important;}
+/* Text plates: every substantive paragraph/description gets a visible plate */
+.intro-note,.step-note,.step-ur,.text-plate,.definition-card,.rule-card,.evidence-card,.source-card,.warning-box,.issues-box,.dua-card,.tiny-card{
+  background:var(--plate-bg)!important;border:1px solid var(--plate-border)!important;border-radius:12px!important;box-shadow:var(--plate-shadow)!important;padding:.85rem 1rem!important;margin:.55rem 0 1rem!important;
+}
+/* Lists are plates too; each item is visually separated without making the page heavy */
+ul:not(.tabs),ol{background:var(--plate-bg);border:1px solid var(--plate-border);border-radius:12px;padding:.8rem 1.5rem .8rem 2.2rem;box-shadow:var(--plate-shadow);}
+li{color:var(--en-text);direction:ltr;text-align:left;font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.65;margin:.35rem 0;}
+li .ur,li [lang="ur"]{display:block;direction:rtl!important;text-align:right!important;font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq","Noto Nastaliq",serif!important;color:var(--ur-text)!important;}
+/* Paragraphs not already carded still receive a plate */
+p:not(footer p){background:var(--plate-bg);border:1px solid var(--plate-border);border-radius:12px;box-shadow:var(--plate-shadow);padding:.75rem 1rem;margin:.6rem 0 1rem;direction:ltr;text-align:left;font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:var(--en-text);}
+p .ur,p .urdu,p .step-ur,p [lang="ur"]{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq","Noto Nastaliq",serif!important;color:var(--ur-text)!important;direction:rtl!important;text-align:right!important;}
+/* Important points */
+strong,.important,.key-point,.must,.warning,.critical{font-weight:800;}
+.important,.key-point{color:#8a4b08!important;background:#fff3cf;padding:.12rem .3rem;border-radius:4px;}
+.warning,.critical{color:#8b2635!important;background:#fff0f1;padding:.12rem .3rem;border-radius:4px;}
+/* Prevent old RTL rules from turning English into Urdu layout */
+[dir="rtl"] .en,[dir="rtl"] .english,[dir="rtl"] [lang="en"]{direction:ltr!important;text-align:left!important;font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif!important;}
+/* Media remains a separate chapter */
+.panel .media-slot,.panel .media-grid,.panel video,.panel iframe[src*="youtube"],.panel .video-card{display:none!important;}
+#media-guides .media-slot,#media-guides .media-grid,#media-guides video,#media-guides iframe[src*="youtube"],#media-guides .video-card{display:block!important;}
+</style>
+<style id="final-typography-lock">
+/* FINAL TYPOGRAPHY LOCK — bilingual direction, font and alignment */
+html, body { font-family: Tahoma, Calibri, "Times New Roman", sans-serif !important; }
+body, body * { box-sizing: border-box; }
+/* English/default text */
+body, p, li, td, th, .intro-note, .step-note, .subhead, .panel-head h2, h2, h3, h4, .en, .english, .description, .note, .definition, .rule-text {
+  font-family: Tahoma, Calibri, "Times New Roman", sans-serif !important;
+  direction: ltr !important;
+  text-align: left !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+}
+/* English headings */
+h1, h2, h3, h4, .panel-head h2, .subhead, .heading, .section-title, .topic-title {
+  font-family: Tahoma, Calibri, "Times New Roman", sans-serif !important;
+  direction: ltr !important;
+  text-align: left !important;
+  color: #0f5f49 !important;
+  font-weight: 700 !important;
+  border-bottom: 0 !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+}
+/* Urdu */
+.ur, .urdu, .step-ur, .ur-title, [lang="ur"], [dir="rtl"] .ur, [dir="rtl"].ur {
+  font-family: "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", serif !important;
+  direction: rtl !important;
+  text-align: right !important;
+  color: #741f3a !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  line-height: 2.25 !important;
+}
+.panel-head .ur-title, .subhead .ur { font-weight: 700 !important; color:#741f3a !important; }
+/* Arabic */
+.arabic, .arabic-sm, [lang="ar"] {
+  font-family: "Noto Naskh Arabic", Amiri, serif !important;
+  direction: rtl !important;
+  text-align: right !important;
+  color: #237a3b !important;
+  font-size: 1.35rem !important;
+  line-height: 2.15 !important;
+  font-weight: 400 !important;
+}
+/* Bilingual blocks: keep each language in its own direction */
+.step-note, .intro-note { text-align:left !important; direction:ltr !important; }
+.step-note .ur, .intro-note .ur { display:block !important; text-align:right !important; direction:rtl !important; }
+/* No decorative lines under English headings */
+.subhead::after, .panel-head h2::after, h2::after, h3::after { content:none !important; display:none !important; border:0 !important; }
+/* Paragraph/list plates */
+.intro-note, .step-note, .definition, .rule-text, .dua-card, .issues-box, .panel > p, .panel > ul, .panel > ol {
+  background: rgba(255,253,246,.92) !important;
+  border: 1px solid #d7c99f !important;
+  border-radius: 10px !important;
+  padding: .85rem 1rem !important;
+  margin-bottom: 1rem !important;
+}
+li { font-weight:400 !important; }
+</style>
+<style id="landing-and-evidence-repair">
+/* Landing page, strict bilingual separation, compact English plates, and evidence styling */
+#app-title-header h1{font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;font-weight:700!important;line-height:1.15!important;}
+#app-title-header h1 .title-en{display:block;direction:ltr;text-align:center;font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;color:#f7f1e1;}
+#app-title-header h1 .title-ur{display:block;direction:rtl;text-align:center;font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif!important;color:#f0d49a;font-size:.72em;margin-top:.25rem;}
+#app-title-header .tagline{display:flex;flex-direction:column;gap:.1rem;align-items:center;margin:.6rem 0!important;}
+#app-title-header .title-en-small{direction:ltr;text-align:center;font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;color:#d9ecdf;font-size:.95rem;}
+#app-title-header .title-ur-small{direction:rtl;text-align:center;font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif!important;color:#d9a53c;font-size:1.05rem;}
+#app-title-header .sub{font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;font-size:.82rem;direction:ltr;text-align:center;}
+nav .nav-group-label{font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;font-size:.62rem;font-weight:700;letter-spacing:.08em;color:#e2c476;direction:ltr;text-align:left;align-self:center;margin-left:.25rem;}
+nav button{font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;font-weight:500!important;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:0;line-height:1.08!important;}
+nav .nav-en{direction:ltr;text-align:left;font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;}
+nav .nav-ur{direction:rtl;text-align:right;align-self:flex-end;font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif!important;font-size:.78em;line-height:1.45;color:#f0d49a;}
+.landing-page{max-width:980px;margin:0 auto;}
+.landing-title{background:#fffdf6;border:1px solid var(--line);border-radius:14px;padding:1.5rem;text-align:center;}
+.landing-title h2,.directory-head h2{font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;color:var(--heading-emerald);font-weight:700!important;direction:ltr;text-align:center;margin:.1rem 0 .25rem;border:0!important;box-shadow:none!important;}
+.landing-ur,.directory-head .ur{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif!important;color:var(--urdu-maroon);direction:rtl;text-align:center;}
+.language-choice{display:flex;flex-wrap:wrap;justify-content:center;gap:.55rem;margin:1rem 0;}
+.language-btn,.start-btn{font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;border:1px solid var(--gold);border-radius:999px;background:#fff;padding:.55rem .9rem;cursor:pointer;color:var(--heading-emerald);font-weight:600;}
+.language-btn.active,.start-btn{background:var(--gold-bright);color:var(--emerald-deep);}
+.landing-note{font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;font-size:.82rem;line-height:1.55;direction:ltr;text-align:center;font-weight:400!important;margin:.55rem auto;max-width:760px;}
+.landing-note-ur{font-size:1rem;line-height:2;}
+.landing-next{text-align:center;padding:1rem 0 1.25rem;}
+.start-btn{font-size:.9rem;padding:.65rem 1.5rem;}
+.topic-directory{background:rgba(255,253,246,.65);border:1px solid var(--line);border-radius:14px;padding:1.2rem;}
+.directory-head{text-align:center;border:0!important;margin-bottom:.7rem;}
+.topic-directory-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.65rem;}
+.topic-link{display:flex;flex-direction:column;align-items:flex-start;gap:.08rem;width:100%;padding:.7rem .8rem;background:#fffdf6;border:1px solid #d8ccb0;border-radius:10px;cursor:pointer;text-align:left;}
+.topic-link .en{font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;color:#17634f;font-size:.84rem;font-weight:500;direction:ltr;text-align:left;}
+.topic-link .ur{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif!important;color:#741f3a;font-size:.82rem;direction:rtl;text-align:right;align-self:flex-end;line-height:1.65;}
+/* Every English paragraph/plate is smaller, regular and left-to-right. Urdu is separately aligned. */
+.panel p:not(.ur),.panel li,.panel .step-note,.panel .intro-note,.panel .description,.panel .definition,.panel .rule-text,.panel .callout,.panel .source-ref,.panel .sources-box,.panel .evidence,.panel .evidence-card>div:not(.arabic-evidence):not(.ur){font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;font-size:.82rem;line-height:1.58;font-weight:400!important;direction:ltr;text-align:left;}
+.panel .ur,.panel [lang="ur"]{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif!important;color:#741f3a!important;direction:rtl!important;text-align:right!important;font-weight:400!important;}
+.panel-head{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:.05rem!important;border-bottom:0!important;}
+.panel-head h2{font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;color:#17634f!important;font-size:1.45rem!important;font-weight:700!important;direction:ltr!important;text-align:left!important;border:0!important;box-shadow:none!important;margin:0!important;}
+.panel-head .ur-title{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif!important;color:#741f3a!important;font-size:1.02rem!important;direction:rtl!important;text-align:right!important;align-self:stretch!important;border:0!important;line-height:1.9;}
+.subhead{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:.05rem!important;font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;color:#17634f!important;font-size:1.02rem!important;font-weight:700!important;direction:ltr!important;text-align:left!important;border:0!important;margin-top:1.35rem!important;}
+.subhead::after,.panel-head h2::after,h2::after,h3::after{display:none!important;content:none!important;}
+.subhead .ur{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif!important;color:#741f3a!important;font-size:.95rem!important;direction:rtl!important;text-align:right!important;align-self:stretch!important;font-weight:400!important;}
+.panel>.intro-note,.panel>.step-note,.panel>.callout,.panel>.sources-box,.panel>.definition-note,.panel>.bilingual-note,.panel>.source-derived{background:#fffdf8!important;border:1px solid #ddd4c4!important;border-radius:10px!important;padding:.72rem .85rem!important;margin:.65rem 0!important;}
+.evidence-card .source,.source-ref,.sources-box,.evidence{font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;font-size:.74rem!important;color:#5e5a52!important;line-height:1.45!important;direction:ltr!important;text-align:left!important;}
+.evidence-card .source::before,.source-ref::before,.sources-box::before{content:"Evidence / Reference: ";font-weight:700;color:#17634f;}
+#media-guides{display:none;}
+section.panel.active#media-guides{display:block!important;}
+#media-guides .card{background:#fffdf8;border:1px solid #ddd4c4;border-radius:10px;padding:.85rem;margin:.8rem 0;}
+#media-guides .media-slot,#media-guides .media-grid{display:block!important;}
+#media-guides .media-grid{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.7rem;}
+@media(max-width:650px){.topic-directory-grid{grid-template-columns:1fr 1fr;}nav .nav-group-label{display:none;}}
+</style>
+<style id="final-repair-v2">
+.heading-en{display:block;direction:ltr!important;text-align:left!important;font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;color:#17634f!important;font-weight:700!important;}
+.heading-ur{display:block;direction:rtl!important;text-align:right!important;align-self:stretch;font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif!important;color:#741f3a!important;font-weight:400!important;line-height:1.9;}
+.panel .step-en,.panel .en,.panel .english{font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;font-size:.82rem!important;line-height:1.58!important;font-weight:400!important;direction:ltr!important;text-align:left!important;color:#24302b!important;}
+.panel .intro-note strong,.panel .step-note strong,.panel .callout strong,.panel .description strong{font-weight:400!important;}
+.evidence-discipline{background:#f7f8f4;border:1px solid #d5ddd2;border-left:4px solid #17634f;border-radius:10px;padding:.6rem .75rem;margin:.55rem 0 .9rem;}
+.evidence-discipline .evidence-en{font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;font-size:.73rem;line-height:1.5;direction:ltr;text-align:left;color:#4c554f;}
+.evidence-discipline .ur{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif!important;font-size:.86rem;line-height:1.8;color:#741f3a!important;direction:rtl;text-align:right;}
+</style>
+
+<style id="single-index-restore">
+body{font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;}
+#app-title-header h1 .title-en{display:block;direction:ltr;text-align:center;font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;color:var(--parchment);font-weight:700;}
+#app-title-header h1 .title-ur{display:block;direction:rtl;text-align:center;font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif!important;color:#f0d49a;font-size:.72em;margin-top:.25rem;}
+#app-title-header .tagline{display:flex;flex-direction:column;align-items:center;gap:.08rem;}
+#app-title-header .title-ur-small{display:block;direction:rtl;text-align:center;font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif!important;color:var(--gold-bright);font-size:1.05rem;}
+#app-title-header .title-en-small{display:block;direction:ltr;text-align:center;font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;color:#d9ecdf;font-size:.95rem;}
+#app-title-header .sub{font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;direction:ltr;text-align:center;font-size:1rem;font-weight:400!important;}
+#landing-index{display:block!important;max-width:980px;margin:0 auto;padding:1.4rem 1.2rem 4rem;}
+#landing-index .landing-title{background:#fffdf6;border:1px solid var(--line);border-radius:14px;padding:1.25rem 1.5rem;text-align:center;}
+#landing-index .landing-title h2,#landing-index .directory-head h2{font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;color:#17634f;font-weight:700!important;direction:ltr;text-align:center;margin:.1rem 0 .25rem;border:0!important;}
+#landing-index .landing-ur,#landing-index .directory-head .ur{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif!important;color:#741f3a;direction:rtl;text-align:center;}
+#landing-index .language-choice{display:flex;justify-content:center;flex-wrap:wrap;gap:.55rem;margin:1rem 0 .35rem;}
+#landing-index .language-btn,#landing-index .start-btn{font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;border:1px solid var(--gold);border-radius:999px;background:#fff;padding:.55rem .95rem;cursor:pointer;color:#17634f;font-weight:600;}
+#landing-index .language-btn.active,#landing-index .start-btn{background:var(--gold-bright);color:var(--emerald-deep);}
+#landing-index .landing-next{text-align:center;padding:1rem 0 1.1rem;}
+#landing-index .topic-directory{background:rgba(255,253,246,.7);border:1px solid var(--line);border-radius:14px;padding:1.1rem;}
+#landing-index .topic-directory-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.65rem;}
+#landing-index .topic-link{display:flex;flex-direction:column;align-items:flex-start;gap:.05rem;width:100%;padding:.7rem .8rem;background:#fffdf6;border:1px solid #d8ccb0;border-radius:10px;cursor:pointer;text-align:left;}
+#landing-index .topic-link .en{font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;color:#17634f;font-size:.84rem;font-weight:500;direction:ltr;text-align:left;}
+#landing-index .topic-link .ur{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif!important;color:#741f3a;font-size:.82rem;direction:rtl;text-align:right;align-self:stretch;line-height:1.65;}
+#tabs .nav-en{direction:ltr!important;text-align:left!important;font-family:Tahoma,Calibri,"Times New Roman",sans-serif!important;}
+#tabs .nav-ur{direction:rtl!important;text-align:right!important;font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif!important;}
+#topic-main #welcome{display:block;}
+</style>
+
+<style id="welcome-source-layout-lock">
+/* Restored Welcome chapter: source wording is preserved; language presentation is separated. */
+.subhead{display:flex !important; flex-direction:column !important; align-items:stretch !important; gap:.05rem !important; border:0 !important; margin:2rem 0 1rem !important; font-family:Tahoma,Calibri,"Times New Roman",sans-serif !important; font-size:1.25rem !important; color:#0f5f49 !important; text-align:left !important;}
+.subhead::after{display:none !important; content:none !important;}
+.subhead > .ur{display:block !important; order:2 !important; width:100% !important; text-align:right !important; direction:rtl !important; font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif !important; color:#741f3a !important; font-size:1.12rem !important; line-height:2.15 !important;}
+.subhead{direction:ltr !important;}
+.panel-head{display:grid !important; grid-template-columns:1fr 1fr !important; align-items:center !important; border:0 !important;}
+.panel-head h2{font-family:Tahoma,Calibri,"Times New Roman",sans-serif !important; text-align:left !important; color:#0f5f49 !important; font-weight:700 !important;}
+.panel-head .ur-title{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif !important; text-align:right !important; direction:rtl !important; color:#741f3a !important; font-weight:400 !important;}
+.step-en,.step-note,.intro-note,.author-note,.tiny-card,.issues-box,li{font-family:Tahoma,Calibri,"Times New Roman",sans-serif !important; font-size:.88rem !important; line-height:1.55 !important; font-weight:400 !important; direction:ltr !important; text-align:left !important;}
+.step-ur,.ur{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif !important; direction:rtl !important; text-align:right !important; color:#741f3a !important;}
+.arabic,.arabic-sm{font-family:"Noto Naskh Arabic",Amiri,serif !important; direction:rtl !important; text-align:right !important; color:#237a3b !important;}
+@media(max-width:680px){.panel-head{grid-template-columns:1fr !important;gap:.25rem !important;}.panel-head .ur-title{order:2 !important;}.subhead > .ur{font-size:1.02rem !important;}}
+</style>
+</head>
+<body> FINAL CONTENT STANDARD v3 — source-preserving, topic-separated, bilingual typography normalized. <header id="app-title-header">
+  <div class="crest">☪</div>
+  <h1>
+    <span class="title-en">My Deen Companion</span>
+    <span class="title-ur">میرا دین کا ساتھی</span>
+  </h1>
+  <p class="tagline">
+    <span class="title-ur-small">قرآن و سنت کے مطابق</span>
+    <span class="title-en-small">According to the Qur’an &amp; Sunnah</span>
+  </p>
+  <p class="sub">Iman and its essentials, Wudu to Zakat, Aqeedah to daily duas — a complete, step-by-step guide from authentic Sunnah sources, in Arabic, Urdu &amp; English.</p>
+  <div class="rule"></div>
+</header>
+<nav id="tabs">
+<span class="nav-group-label">HOME</span>
+<button class="home-tab" data-tab="welcome"><span class="nav-en">⌂ Home</span><span class="nav-ur">گھر</span></button>
+<span class="nav-group-label">BELIEF</span>
+<button data-tab="iman"><span class="nav-en">Iman</span><span class="nav-ur">ایمان</span></button>
+<button data-tab="prophets"><span class="nav-en">Prophets &amp; Messengers</span><span class="nav-ur">انبیاء و رسل</span></button>
+<button data-tab="pillars"><span class="nav-en">Pillars of Islam</span><span class="nav-ur">ارکانِ اسلام</span></button>
+<span class="nav-group-label">WORSHIP</span>
+<button data-tab="wudu"><span class="nav-en">Wudu</span><span class="nav-ur">وضو</span></button>
+<button data-tab="ghusl"><span class="nav-en">Ghusl</span><span class="nav-ur">غسل</span></button>
+<button data-tab="purity"><span class="nav-en">Purity</span><span class="nav-ur">طہارت</span></button>
+<button data-tab="salah"><span class="nav-en">Salah</span><span class="nav-ur">نماز</span></button>
+<button data-tab="moresalah"><span class="nav-en">Salah Rulings</span><span class="nav-ur">مسائلِ نماز</span></button>
+<button data-tab="nawafil"><span class="nav-en">Nawafil &amp; Jumu‘ah</span><span class="nav-ur">نوافل</span></button>
+<button data-tab="sawm"><span class="nav-en">Fasting</span><span class="nav-ur">روزہ</span></button>
+<button data-tab="zakat"><span class="nav-en">Zakat</span><span class="nav-ur">زکوٰۃ</span></button>
+<button data-tab="hajj"><span class="nav-en">Hajj &amp; Umrah</span><span class="nav-ur">حج و عمرہ</span></button>
+<button data-tab="qurbani"><span class="nav-en">Qurbani &amp; Aqiqah</span><span class="nav-ur">قربانی و عقیقہ</span></button>
+<button data-tab="janazah"><span class="nav-en">Janazah &amp; Burial</span><span class="nav-ur">جنازہ</span></button>
+<span class="nav-group-label">LIFE</span>
+<button data-tab="duaslife"><span class="nav-en">Duas</span><span class="nav-ur">دعائیں</span></button>
+<button data-tab="dhikrduas"><span class="nav-en">Dhikr &amp; Azkar</span><span class="nav-ur">ذکر و اذکار</span></button>
+<button data-tab="duties"><span class="nav-en">Duties &amp; Rights</span><span class="nav-ur">فرائض و حقوق</span></button>
+<button data-tab="family"><span class="nav-en">Marriage &amp; Family</span><span class="nav-ur">نکاح و خاندان</span></button>
+<button data-tab="ethics"><span class="nav-en">Ethics</span><span class="nav-ur">اخلاق</span></button>
+<button data-tab="rulings"><span class="nav-en">Halal/Haram &amp; Sins</span><span class="nav-ur">حلال و حرام</span></button>
+<span class="nav-group-label">FIQH</span>
+<button data-tab="fiqhtools"><span class="nav-en">Fiqh Guide</span><span class="nav-ur">فقہی رہنما</span></button>
+<button data-tab="sects"><span class="nav-en">Schools &amp; Differences</span><span class="nav-ur">مسالک و اختلافات</span></button>
+<button data-tab="finance"><span class="nav-en">Finance &amp; Riba</span><span class="nav-ur">مالیات و سود</span></button>
+<button data-tab="eid"><span class="nav-en">Eid</span><span class="nav-ur">عید</span></button>
+<span class="nav-group-label">AQEEDAH</span>
+<button data-tab="aqeedah"><span class="nav-en">Aqeedah</span><span class="nav-ur">عقیدہ</span></button>
+<button data-tab="aqeedahdeep"><span class="nav-en">Tawheed &amp; Shirk</span><span class="nav-ur">توحید و شرک</span></button>
+<button data-tab="prophethood"><span class="nav-en">Prophethood</span><span class="nav-ur">نبوت</span></button>
+<button data-tab="jihadshahadah"><span class="nav-en">Jihad &amp; Shahadah</span><span class="nav-ur">جہاد و شہادت</span></button>
+<button data-tab="wahiilham"><span class="nav-en">Wahi &amp; Dreams</span><span class="nav-ur">وحی و خواب</span></button>
+<button data-tab="endtimeslife"><span class="nav-en">End Times &amp; Hereafter</span><span class="nav-ur">آخرت</span></button>
+<span class="nav-group-label">HISTORY</span>
+<button data-tab="seerah"><span class="nav-en">Seerah</span><span class="nav-ur">سیرت</span></button>
+<button data-tab="history"><span class="nav-en">Islamic History</span><span class="nav-ur">اسلامی تاریخ</span></button>
+<button data-tab="khilafah"><span class="nav-en">Khilafah &amp; History</span><span class="nav-ur">خلافت و تاریخ</span></button>
+<button data-tab="governance"><span class="nav-en">Governance &amp; Justice</span><span class="nav-ur">حکومت و عدل</span></button>
+<span class="nav-group-label">TOPICS</span>
+<button data-tab="aqeedah-concepts"><span class="nav-en">Aqeedah Concepts</span><span class="nav-ur">عقیدہ کے اہم تصورات</span></button>
+<span class="nav-group-label">QUR’AN &amp; EVIDENCE</span>
+<button data-tab="quranstructure"><span class="nav-en">Qur’an</span><span class="nav-ur">قرآن</span></button>
+<button data-tab="evidencebilingual"><span class="nav-en">Qur’an &amp; Hadith Evidence</span><span class="nav-ur">قرآن و حدیث</span></button>
+<button data-tab="sources"><span class="nav-en">Sources</span><span class="nav-ur">مآخذ</span></button>
+<button data-tab="uploaded-sources"><span class="nav-en">Uploaded Sources</span><span class="nav-ur">اپ لوڈ شدہ ماخذ</span></button>
+<span class="nav-group-label">AQEEDAH</span>
+<button data-tab="hereafter"><span class="nav-en">Qadar &amp; Hereafter</span><span class="nav-ur">تقدیر و آخرت</span></button>
+<span class="nav-group-label">SPECIAL</span>
+<button data-tab="miqraj"><span class="nav-en">Isra, Mi‘raj &amp; Qumran</span><span class="nav-ur">اسراء و معراج</span></button>
+<button data-tab="mirajjannah"><span class="nav-en">Mi‘raj &amp; Jannah</span><span class="nav-ur">معراج و جنت</span></button>
+<span class="nav-group-label">LIFE</span>
+<button data-tab="rights"><span class="nav-en">Living in Non-Muslim Countries</span><span class="nav-ur">غیر مسلم ممالک</span></button>
+<span class="nav-group-label">SPECIAL</span>
+<button data-tab="masterblueprint"><span class="nav-en">Sirat al-Mustaqim</span><span class="nav-ur">صراطِ مستقیم</span></button>
+<button data-tab="definitions-guide"><span class="nav-en">Rules &amp; Concepts</span><span class="nav-ur">احکام و اصطلاحات</span></button>
+<button data-tab="media-guides"><span class="nav-en">Media &amp; Resources</span><span class="nav-ur">میڈیا</span></button>
+</nav>
+<div id="globalSearch" style="max-width:880px;margin:1rem auto 0;padding:0 1.2rem;position:sticky;top:42px;z-index:40;">
+<input aria-label="Search Islamic topics" id="appSearch" placeholder="Search the guide / گائیڈ میں تلاش کریں…" style="width:100%;padding:.8rem 1rem;border:1px solid var(--gold);border-radius:999px;background:#fffdf6;font:inherit;box-shadow:0 2px 8px rgba(0,0,0,.06);"/>
+<div id="searchResults" style="display:none;background:#fffdf6;border:1px solid var(--line);border-radius:10px;margin-top:.35rem;padding:.5rem;max-height:280px;overflow:auto;"></div>
+</div>
+<section id="landing-index" class="landing-page">
+  <div class="landing-title">
+    <h2>Choose Your Language</h2>
+    <div class="ur landing-ur">اپنی زبان منتخب کریں</div>
+    <div class="language-choice">
+      <button class="language-btn active" data-lang-choice="both" type="button">اردو + English</button>
+      <button class="language-btn" data-lang-choice="urdu" type="button">صرف اردو</button>
+      <button class="language-btn" data-lang-choice="english" type="button">English only</button>
+    </div>
+  </div>
+  <div class="landing-next"><button id="landing-next" class="start-btn" type="button">Next · آگے</button></div>
+  <div class="topic-directory">
+    <div class="directory-head"><h2>Topics</h2><div class="ur">تمام موضوعات</div></div>
+    <div class="topic-directory-grid" id="topicDirectoryGrid"></div>
+  </div>
+</section>
+<div id="globalSearch" style="max-width:880px;margin:1rem auto 0;padding:0 1.2rem;position:sticky;top:42px;z-index:40;display:none;">
+<input aria-label="Search Islamic topics" id="appSearch" placeholder="Search the guide / گائیڈ میں تلاش کریں…" style="width:100%;padding:.8rem 1rem;border:1px solid var(--gold);border-radius:999px;background:#fffdf6;font:inherit;box-shadow:0 2px 8px rgba(0,0,0,.06);"/>
+<div id="searchResults" style="display:none;background:#fffdf6;border:1px solid var(--line);border-radius:10px;margin-top:.35rem;padding:.5rem;max-height:280px;overflow:auto;"></div>
+</div>
+<main id="topic-main" style="display:none;">
+<section class="panel active" id="welcome">
+    <div class="welcome-hero">
+      <div class="big-ar">الْحَمْدُ لِلّٰهِ</div>
+      <p class="ur">الحمدللہ! اللہ کا شکر ہے کہ آپ مسلمان ہیں اور امتِ محمدیہ ﷺ میں شامل ہیں — یہ زندگی کی سب سے بڑی نعمت ہے۔</p>
+      <p>Alhamdulillah — all praise is for Allah. If you are reading this as a Muslim, take a moment to be grateful: being part of the Ummah of Prophet Muhammad ﷺ is the greatest blessing a person can carry into this life and the next.</p>
+    </div>
+
+    <div class="author-note">
+      Alhamdulillah, all praise is for Allah — I compiled this guide as a fellow Muslim, for fellow Muslims, and I ask Allah to accept it as a small, sincere effort, and to forgive any error in it. May it be of benefit to you and to me, and may we both remain grateful, all our lives, for the blessing of being born into — or guided to — the Ummah of Muhammad ﷺ.
+      <div class="ur" style="margin-top:.5rem;">الحمدللہ، تمام تعریفیں اللہ کے لیے ہیں — میں نے یہ گائیڈ ایک مسلمان بھائی کی حیثیت سے، اپنے مسلمان بھائیوں کے لیے مرتب کی ہے، اور اللہ سے دعا کرتا ہوں کہ اسے میری ایک چھوٹی، خلوصِ دل کوشش کے طور پر قبول فرمائے، اور اس میں ہونے والی کسی بھی غلطی کو معاف فرمائے۔ اللہ کرے یہ آپ کے اور میرے لیے فائدہ مند ہو، اور ہم دونوں ساری زندگی امتِ محمدیہ ﷺ میں شامل ہونے یا ہدایت پانے کی نعمت پر شکر گزار رہیں۔</div>
+      <div class="sign">— From the Author <span class="ur" style="font-style:normal;">مرتب کی طرف سے</span></div>
+    </div>
+
+    <div class="subhead"><span class="ur">جن و انس کی تخلیق اور مقصدِ تخلیق</span> The Creation of Jinn &amp; Mankind — and Its Purpose</div>
+    <div class="dua-card">
+      <div class="arabic-sm">وَمَا خَلَقْتُ الْجِنَّ وَالْإِنْسَ إِلَّا لِيَعْبُدُوْنِ</div>
+      <div class="step-ur">اور میں نے جن و انس کو صرف اپنی عبادت کے لیے پیدا کیا ہے۔</div>
+      <div class="step-note">Qur'an 51:56 — the single clearest statement in the Qur'an of the purpose behind the existence of both Jinn and mankind together: to worship Allah alone, as this guide's opening section on Tawheed and Shirk describes. Deen (the religion and its accountability) is for both kinds of creation, not humanity alone.</div>
+    </div>
+    <div class="dua-card">
+      <div class="arabic-sm">وَلَقَدْ خَلَقْنَا الْإِنْسَانَ مِنْ صَلْصَالٍ مِّنْ حَمَإٍ مَّسْنُوْنٍ ۝ وَالْجَآنَّ خَلَقْنَاهُ مِنْ قَبْلُ مِنْ نَّارِ السَّمُوْمِ</div>
+      <div class="step-ur">اور بیشک ہم نے انسان کو کھنکھناتی مٹی سے، جو سڑے ہوئے گارے سے (بنی) تھی، پیدا کیا۔ اور جن کو ہم نے اس سے پہلے، دوزخی ہوا کی آگ سے پیدا کیا۔</div>
+      <div class="step-note">Qur'an 15:26-27 — mankind (Adam) was created from clay/mud, while Jinn were created earlier, from a smokeless flame of fire (see also Qur'an 55:15). Jinn are a distinct, unseen creation — not angels, not spirits of the dead, and not a metaphor — described in the Qur'an as possessing free will, intellect, and moral accountability much like humans.</div>
+    </div>
+    <div class="dua-card">
+      <div class="arabic-sm">وَإِذْ صَرَفْنَآ إِلَيْكَ نَفَرًا مِّنَ الْجِنِّ يَسْتَمِعُوْنَ الْقُرْآنَ</div>
+      <div class="step-ur">اور جب ہم نے جنوں کی ایک جماعت کو تمہاری طرف پھیرا، جو قرآن سنتے تھے۔</div>
+      <div class="step-note">Qur'an 46:29 (see also Surah 72, Al-Jinn, named after this event) — a group of Jinn heard the Prophet ﷺ reciting the Qur'an, believed, and returned to warn their own people — confirming that Jinn, like Ins (mankind), are addressed by revelation, capable of belief or disbelief, and subject to reward and punishment for their choices.
+      <div class="ur" style="margin-top:.3rem;">سورۃ الجن (72) میں تفصیل سے بیان ہے کہ یہ جن ایمان لائے اور اپنی قوم کو خبردار کرنے واپس گئے — یہ ثابت کرتا ہے کہ جن بھی، انسانوں کی طرح، وحی کے مخاطب ہیں، ایمان یا کفر کی صلاحیت رکھتے ہیں، اور اپنے انتخاب پر جزا و سزا کے مکلف ہیں۔</div></div>
+    </div>
+    <div class="intro-note" style="margin-bottom:1.6rem;">
+      Since Jinn are also addressed by Islamic teaching and accountable before Allah, Deen (religion) is not exclusive to mankind — the Qur'an's message and the reality of judgment apply to both kinds of creation, even though this guide, written for a human readership, naturally focuses on the human side of practice.
+      <div class="ur">چونکہ جن بھی اسلامی تعلیم کے مخاطب ہیں اور اللہ کے سامنے جوابدہ ہیں، دین صرف انسانوں کے لیے مخصوص نہیں — قرآن کا پیغام اور حساب کی حقیقت دونوں مخلوقات پر لاگو ہوتی ہے، اگرچہ یہ گائیڈ، انسانی قارئین کے لیے لکھی گئی، فطری طور پر عمل کے انسانی پہلو پر توجہ مرکوز رکھتی ہے۔</div>
+    </div>
+
+    <div class="panel-head">
+      <h2>How One Becomes a Muslim</h2>
+      <span class="ur-title">اسلام میں داخل ہونے کا طریقہ</span>
+    </div>
+    <div class="step-ur" style="margin-bottom:1rem;">
+      A person enters Islam by sincerely testifying, with the heart and the tongue, the two parts of the Shahadah (testimony of faith) — believing it truly, understanding its meaning, accepting it, submitting to it, and being honest and sincere in saying it.
+      <br><span style="direction:rtl; display:block; margin-top:.3rem;">انسان دل اور زبان سے سچے دل سے شہادتین کا اقرار کرنے سے اسلام میں داخل ہو جاتا ہے — یقین، سمجھ بوجھ، قبولیت، اطاعت، سچائی اور اخلاص کے ساتھ۔</span>
+    </div>
+    <div class="intro-note">
+      Some Muslims are born to Muslim parents and grow up within the faith from childhood; others come to Islam later in life, having searched, questioned, and found their way to it as adults. Both are equally and fully Muslim the moment they sincerely believe and testify the Shahadah — Islam does not rank one path above the other, and a person's sincerity is judged by Allah alone, not by which path brought them here.
+      <div class="ur">کچھ مسلمان مسلمان والدین کے ہاں پیدا ہوتے ہیں اور بچپن سے اسی دین میں پروان چڑھتے ہیں؛ کچھ زندگی میں بعد میں، تلاش اور سوال کے بعد، بالغ ہو کر اسلام تک پہنچتے ہیں۔ جیسے ہی کوئی سچے دل سے ایمان لا کر شہادتین کا اقرار کرتا ہے، وہ دونوں صورتوں میں یکساں اور مکمل مسلمان ہوتا ہے — اسلام میں کسی ایک راستے کو دوسرے پر فوقیت نہیں دی جاتی، اور انسان کے خلوص کا فیصلہ صرف اللہ کرتا ہے، نہ کہ اس بات سے کہ وہ کس راستے سے یہاں پہنچا۔</div>
+    </div>
+    <div class="dua-card">
+      <div class="dua-label"><span class="ur">کلمہ شہادت</span> — The Kalimah Shahadah</div>
+      <div class="arabic">أَشْهَدُ أَنْ لَّا إِلٰهَ إِلَّا اللّٰهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا رَّسُوْلُ اللّٰهِ</div>
+      <div class="step-ur">میں گواہی دیتا ہوں کہ اللہ کے سوا کوئی سچا معبود نہیں، اور میں گواہی دیتا ہوں کہ محمد اللہ کے رسول ہیں۔</div>
+      <div class="step-note">"I bear witness that there is no true god but Allah, and I bear witness that Muhammad is the Messenger of Allah."</div>
+    </div>
+
+    <div class="subhead"><span class="ur">توحید اور شرک</span> Tawheed and Shirk</div>
+    <div class="step-ur" style="margin-bottom:1rem;">
+      The core of the Shahadah is Tawheed — believing Allah alone is God, with no partner in His lordship (Rububiyyah), His right to be worshipped (Uluhiyyah), or His names and attributes (Asma wa Sifat). Its opposite, Shirk (associating partners with Allah), is the one sin Allah does not forgive if a person dies upon it unrepentant (Qur'an 4:48).
+      <br><span style="direction:rtl; display:block; margin-top:.3rem;">شہادت کا خلاصہ توحید ہے — یہ ماننا کہ اللہ اکیلا معبود ہے، اس کی ربوبیت، الوہیت اور اسماء و صفات میں کوئی شریک نہیں۔ اس کی ضد شرک ہے، جو وہ واحد گناہ ہے جسے اللہ بغیر توبہ کے معاف نہیں کرتا (سورۃ النساء: 48)۔</span>
+    </div>
+    <div class="grid-two" style="margin-bottom:1.6rem;">
+      <div class="tiny-card">
+        <h4>Major Shirk <span class="ur" style="font-size:.95rem;">(شرکِ اکبر)</span></h4>
+        <div class="step-ur">اللہ کے سوا کسی اور سے دعا (پکارنا)، نذر و نیاز، ذبح، یا سجدہ کرنا — یہ اسلام سے خارج کر دینے والا شرک ہے۔</div>
+        <div class="step-note">Directing worship — supplication, vows, sacrifice, or prostration — to anyone besides Allah. This takes a person out of Islam.</div>
+      </div>
+      <div class="tiny-card">
+        <h4>Minor Shirk <span class="ur" style="font-size:.95rem;">(شرکِ اصغر)</span></h4>
+        <div class="step-ur">ریاکاری (دکھاوے کی نیکی)، غیر اللہ کی قسم کھانا، بدشگونی پر یقین — یہ ایمان کو کمزور کرتا ہے مگر اسلام سے خارج نہیں کرتا۔</div>
+        <div class="step-note">Showing off in worship (riya), swearing by other than Allah, believing in bad omens — these weaken faith without removing a person from Islam.</div>
+      </div>
+    </div>
+    <div class="intro-note" style="margin-bottom:1.8rem;">
+      Every dua and every act of worship — asking for help, seeking protection, calling out in hardship — is directed to Allah alone, and to no created being, living or dead, however righteous.
+      <div class="ur">ہر دعا اور ہر عبادت — مدد مانگنا، پناہ چاہنا، مشکل میں پکارنا — صرف اللہ سے کی جاتی ہے، کسی مخلوق سے نہیں، خواہ وہ کتنی ہی نیک کیوں نہ ہو، زندہ ہو یا وفات پا چکی ہو۔</div>
+    </div>
+
+    <div class="subhead"><span class="ur">اسلام کب سے ہے؟</span> How Old Is Islam?</div>
+    <div class="dua-card">
+      <div class="arabic-sm">إِنَّ الدِّيْنَ عِنْدَ اللّٰهِ الْإِسْلَامُ</div>
+      <div class="step-ur">بیشک اللہ کے نزدیک دین اسلام ہی ہے۔</div>
+      <div class="step-note">Qur'an 3:19 — "Islam," meaning submission to the One God, is presented as the single religion Allah has sent through every prophet, not a faith that began only with Muhammad ﷺ.</div>
+    </div>
+    <div class="dua-card">
+      <div class="arabic-sm">مَا كَانَ إِبْرَاهِيْمُ يَهُوْدِيًّا وَّلَا نَصْرَانِيًّا وَّلٰكِنْ كَانَ حَنِيْفًا مُّسْلِمًا</div>
+      <div class="step-ur">ابراہیم نہ یہودی تھے نہ نصرانی، بلکہ وہ یکسو مسلمان تھے۔</div>
+      <div class="step-note">Qur'an 3:67 — Ibrahim is directly called "Muslim," centuries before Muhammad ﷺ, in the generic sense of one who submits to Allah alone.</div>
+    </div>
+    <div class="intro-note" style="margin-bottom:1rem;">
+      In this sense, "Islam" — submission to the One God — is as old as Adam, the first prophet, and every prophet's sincere followers across history, from Nuh's to Musa's to 'Isa's, were "Muslims" in that same core meaning. What changed over time was not the original message, but what later communities did to it.
+      <div class="ur">اس معنی میں، "اسلام" — ایک اللہ کے سامنے سرِ تسلیم خم کرنا — اتنا ہی پرانا ہے جتنا آدم علیہ السلام، پہلے نبی، اور تاریخ میں ہر نبی کے سچے پیروکار — نوح، موسیٰ، عیسیٰ علیہم السلام کے — اسی بنیادی معنی میں "مسلمان" تھے۔ وقت کے ساتھ جو چیز بدلی وہ اصل پیغام نہیں تھا، بلکہ بعد کی اقوام نے اس کے ساتھ جو کیا وہ تھا۔</div>
+    </div>
+    <div class="dua-card">
+      <div class="arabic-sm">فَبِمَا نَقْضِهِمْ مِّيْثَاقَهُمْ لَعَنَّاهُمْ وَجَعَلْنَا قُلُوْبَهُمْ قٰسِيَةً ۖ يُّحَرِّفُوْنَ الْكَلِمَ عَنْ مَّوَاضِعِهٖ</div>
+      <div class="step-ur">پس ان کے عہد توڑنے کے سبب ہم نے انہیں لعنت کی اور ان کے دلوں کو سخت کر دیا، وہ کلمات کو ان کی جگہوں سے بدل دیتے ہیں۔</div>
+      <div class="step-note">Qur'an 5:13 — describing how earlier communities altered and distorted what they had been given (Tahrif) — the Qur'an makes similar points about the corruption of the doctrine of Christ's divinity that developed after him (see 4:171, 5:116).</div>
+    </div>
+    <div class="intro-note" style="margin-bottom:1.8rem;">
+      Islam, as completed and finally preserved through Muhammad ﷺ and the Qur'an, is presented not as a break from earlier revelation but as its restoration — the same original message, now protected from the kind of alteration earlier scriptures underwent (see Qur'an 15:9, and the Khatam an-Nubuwwah section in the Prophets tab).
+      <div class="ur">اسلام، جیسا کہ محمد ﷺ اور قرآن کے ذریعے مکمل اور محفوظ ہوا، پچھلی وحی سے کوئی نیا انحراف نہیں بلکہ اسی کی بحالی ہے — وہی اصل پیغام، اب اس قسم کی تبدیلی سے محفوظ جو پچھلی کتابوں پر گزری (دیکھیں سورۃ الحجر: 9، اور "انبیاء" ٹیب میں "ختمِ نبوت" کا حصہ)۔</div>
+    </div>
+
+    <div class="subhead"><span class="ur">توبہ اور اللہ کی رحمت</span> Tauba (Repentance) &amp; the Mercy of Allah</div>
+    <div class="dua-card">
+      <div class="arabic">قُلْ يَا عِبَادِيَ الَّذِيْنَ أَسْرَفُوْا عَلٰٓى أَنْفُسِهِمْ لَا تَقْنَطُوْا مِنْ رَّحْمَةِ اللّٰهِ ۚ إِنَّ اللّٰهَ يَغْفِرُ الذُّنُوْبَ جَمِيْعًا ۚ إِنَّهٗ هُوَ الْغَفُوْرُ الرَّحِيْمُ</div>
+      <div class="step-ur">کہہ دیجیے: اے میرے بندو جنہوں نے اپنی جانوں پر زیادتی کی ہے، اللہ کی رحمت سے مایوس نہ ہو، بیشک اللہ تمام گناہ بخش دیتا ہے، بیشک وہی بہت بخشنے والا، نہایت رحم کرنے والا ہے۔</div>
+      <div class="step-note">Qur'an 39:53 — one of the most hope-filled verses in the Qur'an, given to reassure even those who have sinned greatly.</div>
+    </div>
+    <div class="step-ur" style="margin-bottom:1rem;">
+      Tauba (sincere repentance) means: stopping the sin, feeling genuine regret, resolving never to return to it, and — where the sin involved wronging another person — putting that right with them as well. Allah's mercy in response to sincere repentance is described throughout the Qur'an as vast and ready, no matter how great the sin.
+      <div style="margin-top:.3rem;">توبہ کا مطلب ہے: گناہ چھوڑ دینا، اس پر حقیقی ندامت محسوس کرنا، دوبارہ نہ کرنے کا پختہ ارادہ کرنا، اور اگر گناہ میں کسی دوسرے انسان کی حق تلفی شامل ہو تو اس سے معاملہ درست کرنا۔ اللہ کی رحمت سچی توبہ کے جواب میں پورے قرآن میں وسیع اور ہمہ وقت میسر بتائی گئی ہے، گناہ خواہ کتنا ہی بڑا کیوں نہ ہو۔</div>
+    </div>
+    <div class="dua-card">
+      <div class="arabic-sm">إِلَّا مَنْ تَابَ وَآمَنَ وَعَمِلَ عَمَلًا صَالِحًا فَأُولٰٓئِكَ يُبَدِّلُ اللّٰهُ سَيِّئَاتِهِمْ حَسَنَاتٍ ۗ وَكَانَ اللّٰهُ غَفُوْرًا رَّحِيْمًا</div>
+      <div class="step-ur">سوائے اس کے جو توبہ کرے، ایمان لائے اور نیک عمل کرے، تو ایسے لوگوں کی برائیوں کو اللہ نیکیوں میں بدل دیتا ہے، اور اللہ بہت بخشنے والا، نہایت رحم کرنے والا ہے۔</div>
+      <div class="step-note">Qur'an 25:70 — this verse follows immediately after 25:68, which names Shirk, unlawful killing, and Zina specifically: even these are included in the promise of sincere repentance being accepted, and Allah is described as able to transform the record of such sins into good deeds, not merely erase them.</div>
+    </div>
+    <div class="grid-two" style="margin-bottom:1.8rem;">
+      <div class="tiny-card">
+        <h4>Exception 1 — Unrepented Shirk</h4>
+        <div class="step-ur">شرک پر بغیر توبہ کے موت — یہ واحد گناہ ہے جسے اللہ نے قرآن میں معاف نہ کرنے کی صراحت فرمائی ہے</div>
+        <div class="step-note">"Allah does not forgive that partners be associated with Him, but He forgives what is less than that for whom He wills" — Qur'an 4:48. This is the one exception the Qur'an itself names explicitly.</div>
+      </div>
+      <div class="tiny-card">
+        <h4>Exception 2 — Repentance Too Late</h4>
+        <div class="step-ur">جب موت کا وقت آ جائے یا سورج مغرب سے طلوع ہو جائے، اس وقت کی توبہ قبول نہیں</div>
+        <div class="step-note">Repentance is not accepted once a person is at the point of death and sees the punishment approaching (Qur'an 4:18), nor after the sun rises from the west, a sign of the Day of Judgment (Sahih Muslim) — repentance must come while there is still real, ordinary time left to act on it.</div>
+      </div>
+      <div class="tiny-card">
+        <h4>The Rights of Other People</h4>
+        <div class="step-ur">دوسرے انسانوں کے حقوق (ظلم، چوری، غیبت وغیرہ) صرف اللہ سے توبہ کرنے سے معاف نہیں ہوتے — حدیثِ مفلس، صحیح مسلم: 2581۔</div>
+        <div class="step-note">Sins against Allah alone (missed prayers, private sins) are covered by sincere repentance to Him. Sins against other people (theft, oppression, backbiting, unpaid debts) additionally require making things right with the wronged person, or seeking their forgiveness — Allah's mercy for His own right is vast, but He does not waive what is owed to His creation without their consent. Reference: the Hadith of Al-Muflis ("the bankrupt"), Sahih Muslim 2581 — the Prophet ﷺ described a person arriving on Judgment Day with prayer, fasting, and zakah, but who had cursed, slandered, taken wealth from, or struck others; his good deeds are transferred to those he wronged until they are exhausted, after which their sins are placed on him instead.</div>
+      </div>
+    </div>
+
+    <div class="subhead"><span class="ur">گناہ اور کفر میں فرق</span> The Difference Between Sin and Kufr (Disbelief)</div>
+    <div class="intro-note">
+      An important, safety-relevant distinction: committing a major sin does not, by itself, remove a person from Islam. Lying, backbiting, Zina, drinking alcohol, and taking Riba are all serious sins (see the Sins, Halal/Haram &amp; Charity tab) — but mainstream Sunni theology (Ahl as-Sunnah) does not declare a Muslim who commits these an unbeliever (Kafir) merely for doing so, so long as they still affirm the core articles of faith.
+      <div class="ur">ایک اہم، حفاظتی نوعیت کی وضاحت: کسی بڑے گناہ کا ارتکاب، خود بخود انسان کو اسلام سے خارج نہیں کرتا۔ جھوٹ، غیبت، زنا، شراب نوشی اور سود لینا سب سنگین گناہ ہیں (دیکھیں "اخلاق" ٹیب) — مگر مرکزی سنی عقیدہ (اہلِ سنت) ان کے مرتکب مسلمان کو محض اسی وجہ سے کافر قرار نہیں دیتا، جب تک وہ ایمان کے بنیادی ارکان کا اقرار رکھتا ہو۔</div>
+    </div>
+    <div class="intro-note">
+      What is different in category is a deliberate, clear denial or mockery of a core, certain article of the faith — denying Allah's existence, rejecting Muhammad's ﷺ prophethood, denying the Qur'an is from Allah, or mocking the religion outright (Qur'an 9:65-66 addresses this last case with particular severity).
+      <div class="ur">جو چیز نوعیت میں مختلف ہے وہ ایمان کے کسی یقینی اور بنیادی رکن کا جان بوجھ کر واضح انکار یا تمسخر ہے — اللہ کے وجود کا انکار، محمد ﷺ کی نبوت کو رد کرنا، قرآن کے اللہ کی طرف سے ہونے کا انکار، یا کھلے عام دین کا مذاق اڑانا (سورۃ التوبہ: 65-66 اس آخری صورت کو خاص شدت سے بیان کرتی ہے)۔</div>
+    </div>
+    <div class="intro-note">
+      Even here, declaring that a specific belief or action is Kufr in principle is entirely different from declaring a specific named individual a disbeliever (Takfir al-Mu'ayyan) — scholars weigh knowledge, intent, capacity, valid religious argument, genuine ignorance, and coercion (Qur'an 16:106 explicitly excuses someone speaking under duress) before applying such a judgment to any real person. For this reason, ordinary Muslims are strongly cautioned against declaring a fellow Muslim a disbeliever over disagreement, an innovation, a mistake, or a sin — this judgment requires real scholarly qualification and extreme caution, not casual use.
+      <div class="ur">یہاں بھی، کسی عقیدے یا فعل کو اصولی طور پر کفر قرار دینا، اور کسی مخصوص، نامزد فرد کو کافر کہنا (تکفیرِ معین)، دو الگ چیزیں ہیں — علماء کسی حقیقی فرد پر یہ حکم لگانے سے پہلے علم، ارادہ، اہلیت، معتبر تاویل، حقیقی جہالت اور جبر (سورۃ النحل: 106 واضح طور پر جبر کے تحت بولنے والے کو معذور قرار دیتی ہے) جیسے عوامل کو مدنظر رکھتے ہیں۔ اسی لیے عام مسلمانوں کو سختی سے تلقین کی جاتی ہے کہ کسی اختلاف، بدعت، غلطی یا گناہ پر کسی مسلمان بھائی کو کافر نہ کہیں — یہ حکم حقیقی علمی اہلیت اور شدید احتیاط کا متقاضی ہے، بے تکلفی سے استعمال کی چیز نہیں۔</div>
+    </div>
+    <div class="intro-note" style="margin-bottom:1.8rem;">
+      On leaving Islam (Riddah/apostasy) as a legal matter: the classical schools of fiqh discuss this topic with genuine, detailed disagreement among themselves — on questions of proof, the distinction between a Muslim and non-Muslim citizen, the role of repentance, and the nature of any legal consequence. Consistent with this guide's position on blasphemy in the Sins, Halal/Haram &amp; Charity tab, any legal consequence is a matter exclusively for a qualified religious court operating under due process — never for a private individual or group to decide or enforce — and contemporary scholarship continues to actively debate how classical rulings on this topic apply today.
+      <div class="ur">اسلام سے خروج (ردت) کو بطور قانونی مسئلہ: کلاسیکی فقہی مکاتب اس موضوع پر آپس میں حقیقی، تفصیلی اختلاف رکھتے ہیں — ثبوت کے مسائل، مسلمان اور غیر مسلم شہری کے فرق، توبہ کے کردار، اور کسی قانونی نتیجے کی نوعیت پر۔ اس گائیڈ کے "اخلاق" ٹیب میں توہینِ رسالت پر بیان کردہ موقف کی طرح، کوئی بھی قانونی نتیجہ خصوصی طور پر ایک مجاز مذہبی عدالت کا معاملہ ہے جو مناسب عدالتی عمل کے تحت کام کرے — کبھی بھی کسی نجی فرد یا گروہ کا فیصلہ یا نفاذ نہیں — اور جدید علمی حلقے اس بات پر مسلسل بحث کرتے ہیں کہ کلاسیکی احکام آج کیسے لاگو ہوتے ہیں۔</div>
+    </div>
+
+    <div class="subhead"><span class="ur">ختمِ نبوت</span> Khatam an-Nubuwwah — the Finality of Prophethood</div>
+    <div class="dua-card">
+      <div class="arabic">مَا كَانَ مُحَمَّدٌ أَبَآ أَحَدٍ مِّنْ رِّجَالِكُمْ وَلٰكِنْ رَّسُوْلَ اللّٰهِ وَخَاتَمَ النَّبِيّٖنَ</div>
+      <div class="step-ur">محمد ﷺ تم میں سے کسی مرد کے باپ نہیں، بلکہ وہ اللہ کے رسول اور خاتم النبیین (تمام نبیوں پر مہر لگانے والے) ہیں۔</div>
+      <div class="step-note">"Muhammad is not the father of any of your men, but he is the Messenger of Allah and the Seal of the Prophets." (Qur'an 33:40)</div>
+    </div>
+    <div class="step-ur" style="margin-bottom:1rem;">
+      Muhammad ﷺ is the final and last Prophet and Messenger sent by Allah to all of mankind. Prophethood and revelation ended with him. The Angel Jibril (Gabriel), who brought divine revelation to the earlier prophets and to Muhammad ﷺ, does not bring revelation to anyone after him. This means:
+      <br><span style="direction:rtl; display:block; margin-top:.3rem;">محمد ﷺ اللہ کی طرف سے تمام انسانیت کے لیے بھیجے گئے آخری نبی اور رسول ہیں۔ نبوت اور وحی ان پر ختم ہو چکی ہے۔ جبرائیل امین علیہ السلام، جو پہلے انبیاء اور محمد ﷺ پر وحی لاتے تھے، اب کسی پر وحی لے کر نہیں آتے۔ اس کا مطلب یہ ہے کہ:</span>
+    </div>
+    <ul style="margin:0 0 1.8rem; padding-inline-start:1.3rem; line-height:1.7;">
+      <li>No new prophet, and no new book of revelation, will come after the Qur'an and Muhammad ﷺ.
+      <div class="ur" style="margin-top:.1rem;">قرآن اور محمد ﷺ کے بعد کوئی نیا نبی یا نئی کتابِ وحی نہیں آئے گی۔</div></li>
+      <li>Anyone who claims to be a prophet after Muhammad ﷺ, or to receive new revelation through Jibril or any angel, is a false claimant — this is one of the clearest, most agreed-upon points of Islamic belief across all schools of thought.
+      <div class="ur" style="margin-top:.1rem;">محمد ﷺ کے بعد نبوت یا وحی کا کوئی بھی دعویٰ کرنے والا جھوٹا ہے — یہ اسلامی عقیدے کے سب سے واضح اور تمام مکاتبِ فکر میں متفقہ نکات میں سے ایک ہے۔</div></li>
+      <li>The Qur'an and the authentic Sunnah of the Prophet ﷺ are the complete and final guidance for all people until the Day of Judgment.
+      <div class="ur" style="margin-top:.1rem;">قرآن اور نبی ﷺ کی صحیح سنت قیامت تک تمام انسانوں کے لیے مکمل اور آخری ہدایت ہیں۔</div></li>
+    </ul>
+
+    <div class="intro-note">
+      With that foundation in place — Alhamdulillah — the rest of this guide walks through wudu, ghusl, salah, fasting, zakat, and hajj: the practical worship built on this belief.
+      <div class="ur">اس بنیاد کے بعد — الحمدللہ — اس گائیڈ کے باقی حصوں میں وضو، غسل، نماز، روزہ، زکوٰۃ اور حج کا عملی طریقہ بیان کیا گیا ہے، جو اسی عقیدے پر قائم ہے۔</div>
+    </div>
+  </section>
+<section class="panel" id="wudu">
+<div class="panel-head">
+<h2>Wudu — Ablution</h2>
+<span class="ur-title">وضو کا طریقہ</span>
+</div><div class="evidence-discipline"><div class="evidence-en">Evidence standard: Qur’an and authenticated hadith are the primary proof. Scholarly commentary, fiqh explanations and source-derived notes are kept distinct; where a specific claim has no displayed primary reference, it is not to be treated as independently established evidence.</div><div class="ur">اصولِ دلیل: قرآن اور صحیح/معتبر حدیث بنیادی دلیل ہیں۔ علما کی تشریح، فقہی وضاحت اور اپ لوڈ شدہ ماخذ سے اخذ کردہ مواد الگ رکھا گیا ہے؛ جس دعوے کے ساتھ واضح بنیادی حوالہ موجود نہ ہو اسے مستقل شرعی دلیل نہ سمجھا جائے۔</div></div>
+<div class="intro-note">
+      Based on Sahih Bukhari &amp; Sahih Muslim narrations of the Prophet ﷺ's wudu.
+      <div class="ur">نبی کریم ﷺ کے وضو کی احادیثِ صحیحہ سے ماخوذ طریقہ۔</div>
+</div>
+<div class="step">
+<div class="step-num">1</div>
+<div class="step-en">Begin by saying "Bismillah" before starting.</div>
+<div class="step-ur">وضو شروع کرنے سے پہلے "بِسْمِ اللّٰہ" پڑھیں۔</div>
+<div class="step-ar">بِسْمِ اللّٰہ</div>
+</div>
+<div class="step">
+<div class="step-num">2</div>
+<div class="step-en">Wash both hands up to the wrists — three times.</div>
+<div class="step-ur">اپنے دونوں ہاتھ گٹوں تک تین بار دھوئیں۔</div>
+<span class="repeat-badge">3×</span>
+</div>
+<div class="step">
+<div class="step-num">3</div>
+<div class="step-en">Rinse the mouth and sniff water into the nose (and blow it out) — three times each.</div>
+<div class="step-ur">کلی کریں اور ناک میں پانی چڑھا کر جھاڑیں — تین تین بار۔</div>
+<span class="repeat-badge">3×</span>
+</div>
+<div class="step">
+<div class="step-num">4</div>
+<div class="step-en">Wash the face, from the hairline to the chin, ear to ear — three times.</div>
+<div class="step-ur">چہرہ پیشانی کے بالوں سے ٹھوڑی تک اور ایک کان سے دوسرے کان تک تین بار دھوئیں۔</div>
+<span class="repeat-badge">3×</span>
+</div>
+<div class="step">
+<div class="step-num">5</div>
+<div class="step-en">Wash both arms up to and including the elbows — three times, right arm first.</div>
+<div class="step-ur">دونوں ہاتھ کہنیوں سمیت تین بار دھوئیں، پہلے دایاں ہاتھ۔</div>
+<span class="repeat-badge">3×</span>
+</div>
+<div class="step">
+<div class="step-num">6</div>
+<div class="step-en">Wipe (mash) the whole head once — start from the front, go to the back of the neck, and return to the front. Then wipe the ears (inside with the index fingers, outside with the thumbs) with the same water.</div>
+<div class="step-ur">پورے سر کا ایک بار مسح کریں — سر کے اگلے حصے سے شروع کرکے گردن کی طرف لے جائیں اور واپس شروع والی جگہ تک لے آئیں۔ اسی پانی سے کانوں کا مسح بھی کریں۔</div>
+</div>
+<div class="step">
+<div class="step-num">7</div>
+<div class="step-en">Wash both feet up to and including the ankles — three times, right foot first. Use the little finger to run water between the toes.</div>
+<div class="step-ur">دونوں پاؤں ٹخنوں سمیت تین بار دھوئیں، پہلے دایاں پاؤں، اور انگلیوں کا خلال بھی کریں۔</div>
+<span class="repeat-badge">3×</span>
+</div>
+<div class="dua-card">
+<div class="dua-label"><span class="ur">وضو کے بعد کی دعا</span> — Dua after Wudu</div>
+<div class="arabic">أَشْهَدُ أَنْ لَّا إِلٰهَ إِلَّا اللّٰہُ وَحْدَهُ لَا شَرِيْكَ لَهٗ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهٗ وَرَسُوْلُهٗ</div>
+<div class="step-ur">میں گواہی دیتا ہوں کہ اللہ کے سوا کوئی معبود نہیں، وہ اکیلا ہے اس کا کوئی شریک نہیں، اور یہ کہ محمد ﷺ اس کے بندے اور رسول ہیں۔</div>
+<div class="step-note">(Sunan an-Nasa'i, Sunan Abi Dawud — sound hadith)</div>
+</div>
+<div class="dua-card">
+<div class="arabic">سُبْحَانَكَ اللّٰهُمَّ وَبِحَمْدِكَ أَشْهَدُ أَنْ لَّا إِلٰهَ إِلَّا أَنْتَ أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ</div>
+<div class="step-ur">اے اللہ! تو پاک ہے، اور تیری تعریف کے ساتھ، میں گواہی دیتا ہوں کہ تیرے سوا کوئی معبود نہیں، میں تجھ سے بخشش مانگتا ہوں اور تیری طرف رجوع کرتا ہوں۔</div>
+<div class="step-note">"Glory is to You, O Allah, and praise; I bear witness that there is no god but You; I seek Your forgiveness and turn to You in repentance" — Sunan Abi Dawud 4859, Sunan an-Nasa'i — commonly recited at the end of a gathering, and reported as something the Prophet ﷺ increased saying toward the end of his life.</div>
+</div>
+<div class="subhead"><span class="ur">وضو کے فرائض اور سنتیں</span> Fara'id (Obligatory) &amp; Sunan (Recommended) of Wudu</div>
+<div class="grid-two" style="margin-bottom:1rem;">
+<div class="tiny-card">
+<h4>Fara'id — the obligatory elements <span class="ur" style="font-size:.85rem;">(فرائض)</span></h4>
+<div class="step-ur">دھونا لازم ہے: چہرہ (ایک بار)، دونوں ہاتھ کہنیوں سمیت، اور دونوں پاؤں ٹخنوں سمیت؛ اور سر کا مسح کرنا (مختصر یا مکمل، مسلک کے مطابق مختلف) — یہ قرآن (سورۃ المائدہ: 6) سے براہِ راست ثابت ہیں اور ان کے بغیر وضو نہیں ہوتا۔</div>
+<div class="step-note">Washing (at least once) the face, both arms including the elbows, both feet including the ankles, and wiping (Mash) the head (in full or in part, per madhhab) — established directly from Qur'an 5:6; wudu is not valid without these.</div>
+</div>
+<div class="tiny-card">
+<h4>Sunan — the recommended elements <span class="ur" style="font-size:.85rem;">(سنتیں)</span></h4>
+<div class="step-ur">بسم اللہ سے شروع کرنا، ہاتھ گٹوں تک دھونا، کلی اور ناک میں پانی چڑھانا، تین بار دھونا (فرض ایک بار ہے)، کانوں کا مسح، انگلیوں کا خلال، اور دائیں طرف سے شروع کرنا — یہ نبی ﷺ کے عمل سے ثابت ہیں، مستحب ہیں، اور وضو انہیں چھوڑنے سے بھی درست رہتا ہے۔</div>
+<div class="step-note">Beginning with "Bismillah," washing the hands to the wrists, rinsing the mouth and nose, washing each part three times (once fulfils the obligation), wiping the ears, running water between the fingers/toes, and starting from the right side — established from the Prophet's ﷺ practice, recommended, and wudu remains valid even if these are omitted.</div>
+</div>
+</div>
+<div class="issues-box">
+<h3>Related Issues <span class="ur">متعلقہ مسائل</span></h3>
+<ul>
+<li><span class="en">What breaks wudu:</span> passing wind, urine or stool; deep sleep lying down; loss of consciousness or intoxication. Whether touching one's spouse, bleeding, or vomiting a mouthful breaks wudu is a point scholars differ on.
+        <span class="ur">ہوا خارج ہونا، پیشاب، پاخانہ، لیٹ کر گہری نیند، بے ہوشی — یہ وضو توڑ دیتے ہیں۔ بیوی کو چھونے، خون بہنے یا منہ بھر قے سے وضو ٹوٹنے میں علماء کا اختلاف ہے۔</span></li>
+<li><span class="en">Doubt about wudu:</span> if unsure whether wudu broke, act on certainty — assume it is still valid unless you are sure otherwise.
+        <span class="ur">شک کی صورت میں یقین پر عمل کریں — جب تک یقین نہ ہو کہ وضو ٹوٹ گیا، اسے قائم سمجھیں۔</span></li>
+<li><span class="en">Mash 'alal-Khuffayn:</span> wiping over leather socks/boots (instead of washing the feet) is permitted for a limited time if they were put on in a state of wudu, and only if they fully cover the foot up to and including the ankles. The time limit is one day and night (24 hours) for a resident, and three days and nights (72 hours) for a traveller, counted from the first wipe after the socks were put on (Sahih Muslim 276). Removing the socks ends this permission — the feet must then be washed fully at the next wudu.
+        <span class="ur" style="display:block; margin-top:.1rem;">اگر موزے باوضو ہو کر پہنے ہوں، اور وہ پاؤں کو ٹخنوں سمیت مکمل ڈھانپتے ہوں، تو ایک مقررہ مدت تک پاؤں دھونے کے بجائے موزوں پر مسح جائز ہے۔ مدت مقیم کے لیے ایک دن رات (24 گھنٹے) اور مسافر کے لیے تین دن رات (72 گھنٹے) ہے، پہلے مسح سے شمار کی جاتی ہے (صحیح مسلم 276)۔ موزے اتارنے سے یہ اجازت ختم ہو جاتی ہے — اگلے وضو میں پاؤں مکمل دھونا ضروری ہوگا۔</span></li>
+<li><span class="en">Order and continuity (Tartib/Muwalat):</span> the Hanbali and Shafi'i schools hold that washing the limbs in the given order, one after another without long gaps, is obligatory; the Hanafi school treats it as recommended (sunnah) rather than a condition.
+        <span class="ur">حنبلی اور شافعی مسلک میں اعضاء کو ترتیب اور پے در پے دھونا واجب ہے؛ حنفی مسلک میں اسے سنت سمجھا جاتا ہے، شرط نہیں۔</span></li>
+<li><span class="en">Bismillah at the start:</span> most scholars consider it recommended (sunnah), not obligatory — wudu remains valid if forgotten.
+        <span class="ur">اکثر علماء کے نزدیک شروع میں بسم اللہ کہنا مستحب ہے، واجب نہیں — بھول جانے سے وضو باطل نہیں ہوتا۔</span></li>
+</ul>
+</div>
+</section>
+<section class="panel" id="ghusl">
+<div class="panel-head">
+<h2>Ghusl — Ritual Bath</h2>
+<span class="ur-title">غسل کا طریقہ</span>
+</div><div class="evidence-discipline"><div class="evidence-en">Evidence standard: Qur’an and authenticated hadith are the primary proof. Scholarly commentary, fiqh explanations and source-derived notes are kept distinct; where a specific claim has no displayed primary reference, it is not to be treated as independently established evidence.</div><div class="ur">اصولِ دلیل: قرآن اور صحیح/معتبر حدیث بنیادی دلیل ہیں۔ علما کی تشریح، فقہی وضاحت اور اپ لوڈ شدہ ماخذ سے اخذ کردہ مواد الگ رکھا گیا ہے؛ جس دعوے کے ساتھ واضح بنیادی حوالہ موجود نہ ہو اسے مستقل شرعی دلیل نہ سمجھا جائے۔</div></div>
+<div class="intro-note">
+      The order followed in the Sunnah: intention, then clean the private parts, then a full wudu, then pour water over the whole body.
+      <div class="ur">سنت طریقہ: نیت، پھر استنجاء، پھر مکمل وضو، پھر پورے جسم پر پانی بہانا۔</div>
+</div>
+<div class="step">
+<div class="step-num">1</div>
+<div class="step-en">Make the intention (niyyah) of ghusl in the heart — no words are required.</div>
+<div class="step-ur">دل میں غسل کی نیت کریں — زبان سے کہنا ضروری نہیں۔</div>
+</div>
