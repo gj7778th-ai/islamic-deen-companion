@@ -256,7 +256,16 @@ nav button.active,nav button:hover{background:var(--title-lime)!important;border
 button:focus-visible,a:focus-visible{outline:3px solid var(--title-lime)!important;outline-offset:3px}
 @media(max-width:600px){header h1{font-size:1.6rem!important}}
 </style>
-</head>
+<style id="source-reference-structure">
+/* Qur'an/Hadith quotation structure: source text, Urdu translation, reference, then explanation. */
+.quote-source-block{margin:.65rem 0 .85rem;padding:.75rem .95rem .85rem;background:#f7fbf4;border:1px solid #b8cfaa;border-radius:9px}
+.quote-source-block .arabic,.quote-source-block .arabic-sm{margin-top:0;padding-top:0;border-top:0}
+.quote-source-block .step-ur{margin-top:.35rem;padding-top:.35rem;border-top:1px dashed #c9d8bf}
+.source-ref{margin-top:.55rem;padding:.45rem .65rem;background:#eef5e8;border-inline-start:4px solid var(--title-leaf,#78a92f);color:#31552f;font-family:Tahoma,Calibri,"Times New Roman",sans-serif;font-size:.88rem;font-weight:700;direction:ltr;text-align:left}
+.source-ref .ref-ur{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif;direction:rtl;text-align:right;color:var(--urdu-maroon,#741f3a);font-weight:400;margin-inline-start:.3rem}
+.quote-explanation{margin-top:.75rem;padding-top:.7rem;border-top:2px solid #d8dfcf}
+.quote-explanation .step-note{margin-top:0;font-style:normal}
+</style></head>
 <body>
 
 <header>
@@ -5473,5 +5482,36 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--title-lime)!importa
   });
 </script>
 
-</body>
+<script id="quote-reference-formatter">
+(function(){
+ const sourceSelectors='.arabic,.arabic-sm,.step-ar,[data-quran-quote],[data-hadith-quote]';
+ const citationPatterns=[
+  /Qur[’\']?an\s+\d+(?::\d+(?:[-–]\d+)?)?/i,
+  /Quran\s+\d+(?::\d+(?:[-–]\d+)?)?/i,
+  /(?:Sahih\s+al-Bukhari|Sahih\s+Bukhari|Sahih\s+Muslim|Sunan\s+Abi\s+Dawud|Sunan\s+an-Nasa.?i|Sunan\s+Ibn\s+Majah|Jami.?\s+at-Tirmidhi|Musnad\s+Ahmad|Muwatta.?\s+Malik|Al-Adab\s+al-Mufrad)(?:\s+\d+(?:[-–]\d+)?)?/i
+ ];
+ const clean=t=>(t||'').replace(/\s+/g,' ').trim();
+ function extractReference(note){
+  const t=clean(note.textContent); if(!t)return '';
+  for(const re of citationPatterns){const m=t.match(re);if(m)return clean(m[0]);}
+  if(/^[^—–-]{2,90}\s+[—–-]/.test(t))return clean(t.split(/\s*[—–-]\s*/,1)[0]);
+  if(/^\([^)]{3,140}\)/.test(t))return clean(t.match(/^\([^)]{3,140}\)/)[0]);
+  return '';
+ }
+ document.querySelectorAll(sourceSelectors).forEach(ar=>{
+  if(ar.closest('.quote-source-block'))return;
+  let ur=ar.nextElementSibling;
+  while(ur&&ur.nodeType===1&&!ur.matches('.step-ur,.ur')){if(ur.matches('.step-note'))break;ur=ur.nextElementSibling}
+  if(!ur||!ur.matches('.step-ur,.ur'))return;
+  let note=ur.nextElementSibling;
+  while(note&&note.nodeType===1&&!note.matches('.step-note'))note=note.nextElementSibling;
+  if(!note)return;
+  const ref=extractReference(note);if(!ref)return;
+  const wrap=document.createElement('div');wrap.className='quote-source-block';
+  ar.parentNode.insertBefore(wrap,ar);wrap.appendChild(ar);wrap.appendChild(ur);
+  const refEl=document.createElement('div');refEl.className='source-ref';refEl.innerHTML='<span>Reference · حوالہ:</span> '+ref;wrap.appendChild(refEl);
+  note.classList.add('quote-explanation');
+ });
+})();
+</script></body>
 </html>
