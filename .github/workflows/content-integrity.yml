@@ -1,0 +1,22 @@
+name: Content preservation and navigation QA
+on:
+  push:
+    branches:
+      - audit/content-preservation-2026-11-11
+  pull_request:
+    paths:
+      - index.html
+      - assets/content-quality.js
+      - tests/content-integrity.test.js
+      - .github/workflows/content-integrity.yml
+jobs:
+  content-integrity:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run offline content and navigation integrity checks
+        run: node tests/content-integrity.test.js
+      - name: Check JavaScript syntax
+        run: node --check assets/content-quality.js
