@@ -1,18 +1,29 @@
 #!/usr/bin/env node
-// Run: node tests/content-integrity.test.js
-// Uses only Node.js built-ins. Does not alter source files.
-const fs=require('node:fs');
-const assert=require('node:assert/strict');
-const html=fs.readFileSync('index.html','utf8');
-const enhancement=fs.readFileSync('assets/content-quality.js','utf8');
-const ids=[...html.matchAll(/<section class="panel(?: active)?" id="([^"]+)">/g)].map(m=>m[1]);
-assert.equal(ids.length,27,'The original 27 topic panels must remain');
-assert.equal(new Set(ids).size,27,'Panel IDs must be unique');
-for(const id of ids)assert.ok(html.includes('data-tab="'+id+'"'),'Missing navigation button: '+id);
-assert.ok(html.includes('<script defer src="assets/content-quality.js"></script>'),'Missing quality script');
-assert.ok(enhancement.includes('deen-topic-search'),'Missing topic search');
-assert.ok(enhancement.includes('لَبَّيْكَ اللّٰهُمَّ عُمْرَةً'),'Missing Umrah translation target');
-assert.ok(html.includes('Sahih al-Bukhari 614'),'Missing Adhan reference');
-assert.ok(html.includes('Sahih Muslim 2695 as dearer'),'Missing Muslim clarification');
-assert.ok(!html.includes('مَحْمُوْدَنِ'),'Known malformed Adhan transcription remains');
-console.log('PASS: 27 panels, navigation, quality script, bilingual additions and reference corrections');
+// Run from repository root: node tests/content-integrity.test.js
+// Offline, dependency-free regression checks for the 27-section HTML app.
+'use strict';
+const fs = require('node:fs');
+const assert = require('node:assert/strict');
+const html = fs.readFileSync('index.html', 'utf8');
+const quality = fs.readFileSync('assets/content-quality.js', 'utf8');
+const ids = [...html.matchAll(/<section\s+class="panel(?: active)?"\s+id="([^"]+)"/g)].map(m => m[1]);
+const nav = [...html.matchAll(/<button\s+data-tab="([^"]+)"/g)].map(m => m[1]);
+const expected = ['welcome','wudu','ghusl','salah','janazah','purity','nawafil','sawm','zakat','hajj','adaptations','hereafter','prophets','moresalah','duties','sects','sources','seerah','governance','family','iman','pillars','eid','quranstructure','ethics','rulings','dhikrduas'];
+assert.equal(ids.length, 27, 'All 27 original sections must remain');
+assert.deepEqual([...ids].sort(), [...expected].sort(), 'A preserved panel was renamed or removed');
+assert.equal(new Set(ids).size, 27, 'Duplicate section IDs');
+assert.deepEqual([...nav].sort(), [...ids].sort(), 'Each panel must have exactly one matching navigation button');
+assert.equal((html.match(/<script\s+defer\s+src="assets\/content-quality\.js"><\/script>/g)||[]).length, 1, 'Quality script must load exactly once');
+assert.equal((html.match(/id="tabs"/g)||[]).length, 1, 'Expected one navigation root');
+assert.ok(html.includes('Sahih al-Bukhari 614'), 'Post-Adhan supplication reference missing');
+assert.ok(html.includes('Sahih Muslim 2695 as dearer'), 'Muslim 2695/2696 distinction missing');
+assert.ok(!html.includes('مَحْمُوْدَنِ'), 'Malformed Adhan wording still present');
+assert.ok(quality.includes('deen-topic-search') && quality.includes('aria-live'), 'Accessible search missing');
+for (const id of ['hajj', 'moresalah']) {
+  assert.ok(quality.includes("section:'" + id + "'"), 'Translation enhancement missing for ' + id);
+}
+assert.ok(quality.includes("lang='ur'") && quality.includes("lang='en'"), 'Translation language tags missing');
+const Arabic = /[\u0600-\u06ff]/u;
+assert.ok(Arabic.test(html), 'Arabic or Urdu content unexpectedly absent');
+assert.ok(html.length > 600000, 'Unexpectedly large reduction in preserved source content');
+console.log('PASS: 27 preserved sections, one-to-one navigation, references, search and translation hooks');
