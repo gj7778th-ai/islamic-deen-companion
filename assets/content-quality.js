@@ -22,20 +22,7 @@
       if(!found.length){results.textContent='No matching sections · کوئی نتیجہ نہیں';return;}
       found.forEach(e=>{const b=document.createElement('button');b.type='button';b.textContent=e.title;const ix=e.text.toLocaleLowerCase().indexOf(q);const snippet=document.createElement('small');snippet.textContent=ix>=0?'…'+e.text.slice(Math.max(0,ix-55),ix+q.length+95)+'…':'';b.appendChild(snippet);b.addEventListener('click',()=>{const tab=nav.querySelector('[data-tab="'+e.id+'"]');if(tab)tab.click();input.value='';results.replaceChildren();});results.appendChild(b);});
     });
-    // Add missing directly paired meanings without altering existing Arabic or commentary.
-    const translations=[
-      {section:'hajj',phrase:'لَبَّيْكَ اللّٰهُمَّ عُمْرَةً',ur:'اے اللہ! میں عمرے کے لیے حاضر ہوں۔',en:'Here I am, O Allah, for Umrah.'},
-      {section:'moresalah',phrase:'لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّٰهِ',ur:'اللہ کی مدد کے بغیر نہ کوئی طاقت ہے نہ قوت۔',en:'There is no power or strength except through Allah.'}
-    ];
-    translations.forEach(t=>{
-      const section=document.getElementById(t.section);if(!section)return;
-      const ar=[...section.querySelectorAll('.arabic,.arabic-sm,.step-ar')].find(el=>clean(el.textContent)===t.phrase);
-      if(!ar||ar.parentElement?.querySelector('[data-deen-translation="'+t.section+'"]'))return;
-      const box=document.createElement('div');box.className='deen-added-translation';box.dataset.deenTranslation=t.section;
-      const ur=document.createElement('div');ur.lang='ur';ur.dir='rtl';ur.textContent=t.ur;
-      const en=document.createElement('div');en.lang='en';en.dir='ltr';en.textContent=t.en;
-      box.append(ur,en);ar.insertAdjacentElement('afterend',box);
-    });
+    // Direct bilingual translations are now preserved in index.html rather than injected at runtime.
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready,{once:true});else ready();
 })();
