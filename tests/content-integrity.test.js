@@ -19,11 +19,20 @@ assert.ok(html.includes('Sahih al-Bukhari 614'), 'Post-Adhan supplication refere
 assert.ok(html.includes('Sahih Muslim 2695 as dearer'), 'Muslim 2695/2696 distinction missing');
 assert.ok(!html.includes('مَحْمُوْدَنِ'), 'Malformed Adhan wording still present');
 assert.ok(quality.includes('deen-topic-search') && quality.includes('aria-live'), 'Accessible search missing');
-for (const id of ['hajj', 'moresalah']) {
-  assert.ok(quality.includes("section:'" + id + "'"), 'Translation enhancement missing for ' + id);
+const translationPairs = [
+  ['لَبَّيْكَ اللّٰهُمَّ عُمْرَةً', 'اے اللہ! میں عمرے کے لیے حاضر ہوں۔', 'Here I am, O Allah, for Umrah.'],
+  ['لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّٰهِ', 'اللہ کی مدد کے بغیر نہ کوئی طاقت ہے نہ قوت۔', 'There is no power or strength except through Allah.'],
+  ['أَعُوْذُ بِاللّٰہِ مِنَ الشَّيْطَانِ الرَّجِيْمِ', 'میں شیطان مردود سے اللہ کی پناہ مانگتا ہوں۔', 'I seek refuge in Allah from Satan, the accursed.']
+];
+for (const [arabic, urdu, english] of translationPairs) {
+  const at = html.indexOf(arabic);
+  assert.ok(at >= 0, 'Missing Arabic text: ' + arabic);
+  const adjacent = html.slice(at, at + 700);
+  assert.ok(adjacent.includes(urdu), 'Urdu meaning not adjacent to ' + arabic);
+  assert.ok(adjacent.includes(english), 'English meaning not adjacent to ' + arabic);
 }
-assert.ok(quality.includes("lang='ur'") && quality.includes("lang='en'"), 'Translation language tags missing');
+assert.ok(!quality.includes('deen-added-translation'), 'Legacy translation injection should be removed');
 const Arabic = /[\u0600-\u06ff]/u;
 assert.ok(Arabic.test(html), 'Arabic or Urdu content unexpectedly absent');
 assert.ok(html.length > 600000, 'Unexpectedly large reduction in preserved source content');
-console.log('PASS: 27 preserved sections, one-to-one navigation, references, search and translation hooks');
+console.log('PASS: 27 preserved sections, one-to-one navigation, references, search and source translations');
