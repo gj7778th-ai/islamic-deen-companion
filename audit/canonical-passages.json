@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "description": "Canonical index of repeated Arabic passages. Does not delete, replace or authenticate source quotations.",
+  "entries": [
+    {
+      "id": "REP-001",
+      "sections": [
+        "welcome",
+        "iman"
+      ],
+      "arabic": "مَا كَانَ مُحَمَّدٌ أَبَآ أَحَدٍ مِّنْ رِّجَالِكُمْ وَلٰكِنْ رَّسُوْلَ اللّٰهِ وَخَاتَمَ النَّبِيّٖنَ",
+      "source": "Qur'an 33:40",
+      "verification": "verse-location-identified; translation/edition check pending"
+    },
+    {
+      "id": "REP-002",
+      "sections": [
+        "salah",
+        "salah"
+      ],
+      "arabic": "سُبُّوْحٌ قُدُّوْسٌ رَّبُّ الْمَلٰٓئِكَةِ وَالرُّوْحِ",
+      "source": null,
+      "verification": "citation and grading pending independent source verification"
+    },
+    {
+      "id": "REP-003",
+      "sections": [
+        "moresalah",
+        "dhikrduas"
+      ],
+      "arabic": "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّٰهِ",
+      "source": null,
+      "verification": "citation and grading pending independent source verification"
+    },
+    {
+      "id": "REP-004",
+      "sections": [
+        "duties",
+        "ethics"
+      ],
+      "arabic": "أَكْمَلُ الْمُؤْمِنِيْنَ إِيْمَانًا أَحْسَنُهُمْ خُلُقًا، وَخِيَارُكُمْ خِيَارُكُمْ لِنِسَآئِهِمْ",
+      "source": null,
+      "verification": "citation and grading pending independent source verification"
+    },
+    {
+      "id": "REP-005",
+      "sections": [
+        "duties",
+        "ethics"
+      ],
+      "arabic": "لَا يُؤْمِنُ أَحَدُكُمْ حَتّٰى يُحِبَّ لِأَخِيْهِ مَا يُحِبُّ لِنَفْسِهٖ",
+      "source": null,
+      "verification": "citation and grading pending independent source verification"
+    },
+    {
+      "id": "REP-006",
+      "sections": [
+        "sources",
+        "quranstructure"
+      ],
+      "arabic": "مَنْ قَرَأَ حَرْفًا مِّنْ كِتَابِ اللّٰهِ فَلَهٗ بِهٖ حَسَنَةٌ وَّالْحَسَنَةُ بِعَشْرِ أَمْثَالِهَا",
+      "source": null,
+      "verification": "citation and grading pending independent source verification"
+    },
+    {
+      "id": "REP-007",
+      "sections": [
+        "ethics",
+        "dhikrduas"
+      ],
+      "arabic": "وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ",
+      "source": "Qur'an 113:5",
+      "verification": "verse-location-identified; translation/edition check pending"
+    },
+    {
+      "id": "REP-008",
+      "sections": [
+        "dhikrduas",
+        "dhikrduas"
+      ],
+      "arabic": "اَلْحَمْدُ لِلّٰهِ الَّذِيْ بِنِعْمَتِهٖ تَتِمُّ الصَّالِحَاتُ",
+      "source": null,
+      "verification": "citation and grading pending independent source verification"
+    },
+    {
+      "id": "REP-009",
+      "sections": [
+        "dhikrduas",
+        "dhikrduas"
+      ],
+      "arabic": "اَلْحَمْدُ لِلّٰهِ عَلٰى كُلِّ حَالٍ",
+      "source": null,
+      "verification": "citation and grading pending independent source verification"
+    }
+  ]
+}
