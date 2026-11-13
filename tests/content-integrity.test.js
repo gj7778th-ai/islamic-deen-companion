@@ -35,4 +35,21 @@ assert.ok(!quality.includes('deen-added-translation'), 'Legacy translation injec
 const Arabic = /[\u0600-\u06ff]/u;
 assert.ok(Arabic.test(html), 'Arabic or Urdu content unexpectedly absent');
 assert.ok(html.length > 600000, 'Unexpectedly large reduction in preserved source content');
+// Day 3: verify canonical duplicates against the preserved source, without removing passages.
+const registry = JSON.parse(fs.readFileSync('audit/canonical-passages.json', 'utf8'));
+assert.equal(registry.entries.length, 9, 'Nine original repeated-quotation groups expected');
+const normaliseArabic = value => value.normalize('NFKC').replace(/[\\u064b-\\u065f\\u0670\\u06d6-\\u06ed\\u0640]/g, '').replace(/\\s+/g, ' ').trim();
+const positions = [...html.matchAll(/<section\\s+class="panel(?: active)?"\\s+id="([^"]+)"/g)].map(m => ({ id: m[1], at: m.index }));
+const quotes = [...html.matchAll(/<div class="arabic(?:-sm)?">([^<]+)<\\/div>/g)].map(m => ({
+  value: normaliseArabic(m[1]),
+  section: positions.filter(p => p.at < m.index).at(-1)?.id
+}));
+for (const record of registry.entries) {
+  const found = quotes.filter(q => q.value === normaliseArabic(record.arabic)).map(q => q.section);
+  assert.deepEqual(found, record.sections, 'Repeated quote missing or moved: ' + record.id);
+  assert.ok(record.verification, 'Missing verification status: ' + record.id);
+}
+assert.ok(quality.includes('deen-cross-reference'), 'Runtime cross-reference presentation missing');
+assert.ok(quality.includes('canonicalPassages'), 'Runtime canonical cross-reference index missing');
+
 console.log('PASS: 27 preserved sections, one-to-one navigation, references, search and source translations');
