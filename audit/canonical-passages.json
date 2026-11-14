@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "description": "Canonical index of repeated Arabic passages. Does not delete, replace or authenticate source quotations.",
+  "description": "Canonical index of repeated Arabic passages. Does not delete, replace or authenticate source quotations. Source comparisons are explicitly limited to named records; other records remain unverified.",
   "entries": [
     {
       "id": "REP-001",
@@ -9,8 +9,11 @@
         "iman"
       ],
       "arabic": "مَا كَانَ مُحَمَّدٌ أَبَآ أَحَدٍ مِّنْ رِّجَالِكُمْ وَلٰكِنْ رَّسُوْلَ اللّٰهِ وَخَاتَمَ النَّبِيّٖنَ",
-      "source": "Qur'an 33:40",
-      "verification": "verse-location-identified; translation/edition check pending"
+      "source": "Qur'an 33:40 (partial quotation)",
+      "verification": "source-location-and-displayed-phrase-compared-2026-11-15; full verse not quoted; translation and Uthmani orthography not fully audited",
+      "sourceUrl": "https://quran.com/33/40",
+      "grading": "not applicable — Qur'an",
+      "quoteScope": "partial verse"
     },
     {
       "id": "REP-002",
@@ -19,8 +22,11 @@
         "salah"
       ],
       "arabic": "سُبُّوْحٌ قُدُّوْسٌ رَّبُّ الْمَلٰٓئِكَةِ وَالرُّوْحِ",
-      "source": null,
-      "verification": "citation and grading pending independent source verification"
+      "source": "Sahih Muslim 487a",
+      "verification": "Arabic phrase and collection number compared to published narration 2026-11-15; app diacritics are nonstandard; translations not fully audited",
+      "sourceUrl": "https://sunnah.com/muslim:487a",
+      "grading": "Sahih — reported in Sahih Muslim",
+      "quoteScope": "full short invocation within narration"
     },
     {
       "id": "REP-003",
@@ -49,8 +55,11 @@
         "ethics"
       ],
       "arabic": "لَا يُؤْمِنُ أَحَدُكُمْ حَتّٰى يُحِبَّ لِأَخِيْهِ مَا يُحِبُّ لِنَفْسِهٖ",
-      "source": null,
-      "verification": "citation and grading pending independent source verification"
+      "source": "Sahih al-Bukhari 13",
+      "verification": "Arabic phrase and source identifier compared 2026-11-15; transliteration/translation not fully audited",
+      "sourceUrl": "https://sunnah.com/bukhari:13",
+      "grading": "Sahih — reported in Sahih al-Bukhari",
+      "quoteScope": "reported sentence"
     },
     {
       "id": "REP-006",
@@ -59,8 +68,11 @@
         "quranstructure"
       ],
       "arabic": "مَنْ قَرَأَ حَرْفًا مِّنْ كِتَابِ اللّٰهِ فَلَهٗ بِهٖ حَسَنَةٌ وَّالْحَسَنَةُ بِعَشْرِ أَمْثَالِهَا",
-      "source": null,
-      "verification": "citation and grading pending independent source verification"
+      "source": "Jami' at-Tirmidhi 2910",
+      "verification": "Opening Arabic clause and source number compared 2026-11-15; app excerpt omits continuation about Alif-Lam-Mim; translation not fully audited",
+      "sourceUrl": "https://sunnah.com/tirmidhi:2910",
+      "grading": "Al-Tirmidhi: hasan sahih gharib (this route); Darussalam edition: Hasan; alternate transmission routes mentioned by al-Tirmidhi",
+      "quoteScope": "partial hadith"
     },
     {
       "id": "REP-007",
@@ -70,7 +82,10 @@
       ],
       "arabic": "وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ",
       "source": "Qur'an 113:5",
-      "verification": "verse-location-identified; translation/edition check pending"
+      "verification": "Full verse phrase compared to Quran.com 2026-11-15; diacritic and translation edition not fully audited",
+      "sourceUrl": "https://quran.com/113/5",
+      "grading": "not applicable — Qur'an",
+      "quoteScope": "complete verse"
     },
     {
       "id": "REP-008",
@@ -92,5 +107,6 @@
       "source": null,
       "verification": "citation and grading pending independent source verification"
     }
-  ]
+  ],
+  "lastSourceReview": "2026-11-15"
 }
