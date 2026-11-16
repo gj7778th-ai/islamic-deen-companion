@@ -234,6 +234,12 @@
   footer .ur{font-size:1rem; margin-top:.3rem;}
 
   ::selection{background:var(--gold-bright); color:var(--emerald-deep);}
+
+  /* Day 6: keyboard focus, narrow-screen text and reduced-motion safeguards. */
+  :where(a,button,input,select,textarea):focus-visible{outline:3px solid var(--gold);outline-offset:3px;}
+  .intro-note,.tiny-card,.step-ur,.ur,.arabic-sm{overflow-wrap:anywhere;}
+  @media(max-width:600px){main{padding:1.25rem .85rem 3rem;}nav{padding-inline:.6rem;}nav button{white-space:normal;text-align:start;min-height:44px;}.intro-note{line-height:1.8;}.ur,.step-ur{line-height:2.25;}}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;}}
 </style>
 
 <style id="deen-github-polish">
@@ -3364,12 +3370,21 @@ html,body{background:#eef2e9!important;color:var(--ink)!important}body{font-fami
     </div>
 
 <div class="subhead"><span class="ur">فقہی مسالک میں فرق</span> Differences Between the Schools of Fiqh</div>
+<div class="intro-note" data-attribution-review="fiqh">
+  <strong>Reading guide: attribution and scope.</strong> The Hanafi, Maliki, Shafi'i and Hanbali schools are traditions of legal reasoning, not separate religions. A cited hadith establishes that a report exists; deciding whether it applies to a particular ruling also requires examining its authenticity, context, possible specification or abrogation, and other evidence. Differences about raising the hands, prayer recitation and other details should be attributed to a named school and an identifiable source, rather than labelled simply “Sunnah versus non-Sunnah.” Acceptance by Allah cannot be certified by this guide; jurists distinguish outward legal validity from ultimate divine acceptance. For differing rulings, consult a qualified scholar and do not assume a worshipper following another recognised school is acting in bad faith.
+  <div class="ur" lang="ur" dir="rtl">مطالعے کی رہنمائی: حنفی، مالکی، شافعی اور حنبلی مکاتبِ فقہ، شرعی استدلال کی روایات ہیں، الگ مذاہب نہیں۔ کسی حدیث کا حوالہ مل جانا اور کسی خاص فقہی حکم پر اس کا اطلاق دو مختلف مرحلے ہیں؛ سند، سیاق، تخصیص، نسخ کے احتمال اور دیگر دلائل کا جائزہ ضروری ہو سکتا ہے۔ رفع الیدین، قراءت اور دوسرے فروعی اختلافات کو کسی معتبر فقہی مکتب اور واضح ماخذ سے منسوب کریں، محض «سنت بمقابلہ غیر سنت» نہ کہیں۔ ظاہری فقہی صحت اور اللہ کے ہاں قبولیت الگ امور ہیں؛ اس گائیڈ سے کسی عبادت کی قطعی قبولیت کا فیصلہ نہیں کیا جا سکتا۔ اختلافی مسئلے میں اہلِ علم سے رجوع کریں اور دوسرے معتبر مسلک کے پیروکار کی نیت پر حکم نہ لگائیں۔</div>
+</div>
+<div class="intro-note" data-attribution-review="aqeedah">
+  <strong>Creed terminology:</strong> Athari, Ash'ari and Maturidi are labels for different Sunni theological approaches; they should not be equated with the four fiqh schools, and their adherents do not all hold identical views. Where the attributes of Allah, figurative interpretation (ta'wil), or consigning the detailed meaning (tafwid) are discussed, state whose view is being presented and distinguish the Qur'anic wording from later scholarly explanation. Qur'an 42:11 is a shared textual anchor (“There is nothing like unto Him”), but by itself does not settle every later methodological dispute.
+  <div class="ur" lang="ur" dir="rtl">اصطلاحاتِ عقیدہ: اثری، اشعری اور ماتریدی اہلِ سنت کے مختلف کلامی مناہج کے نام ہیں؛ انہیں چار فقہی مسالک کا مترادف نہ سمجھیں، نہ ہر مکتب کے تمام علماء کی آراء یکساں فرض کریں۔ صفاتِ الٰہی، تاویل یا تفویض کی بحث میں واضح کریں کہ کس عالم یا مکتب کا موقف بیان ہو رہا ہے، اور قرآنی الفاظ کو بعد کی علمی تشریح سے الگ رکھیں۔ سورۃ الشوریٰ 42:11 «اس جیسی کوئی چیز نہیں» ایک مشترک قرآنی اصل ہے، لیکن اس سے بعد کے تمام منہجی اختلافات خودبخود طے نہیں ہوتے۔</div>
+</div>
+
     <div class="intro-note">
       The four major Sunni schools of jurisprudence (madhahib) — Hanafi, Shafi'i, Maliki, and Hanbali — agree entirely on the core pillars and beliefs of Islam (Shahadah, Salah, Zakat, Sawm, Hajj, Tawheed). Their differences are in the detailed, secondary rulings (furu') derived through Ijtihad on matters the Qur'an and Sunnah did not spell out with a single explicit method — several examples of which are already noted throughout this guide (e.g. hand placement in prayer, raf' al-yadayn).
       <div class="ur">چاروں بڑے سنی فقہی مسالک — حنفی، شافعی، مالکی اور حنبلی — اسلام کے بنیادی ارکان اور عقائد (شہادت، نماز، زکوٰۃ، روزہ، حج، توحید) پر مکمل متفق ہیں۔ ان کا اختلاف فروعی، تفصیلی مسائل میں ہے جو اجتہاد سے اخذ کیے گئے، جن میں سے کئی مثالیں اس گائیڈ میں پہلے بیان ہو چکی ہیں (مثلاً نماز میں ہاتھ کی جگہ، رفع الیدین)۔</div>
     </div>
     <div class="intro-note">
-      <span class="en" style="font-weight:600;">On following a madhhab versus a specific Sunnah practice:</span> a prayer or act of worship performed correctly according to any recognised madhhab is valid and accepted — following a school of fiqh is a legitimate, longstanding way of practising Islam, not a deficiency. At the same time, where a specific practice is directly, authentically established from the Prophet ﷺ himself (such as Raf' al-Yadayn, detailed in the Salah tab) and is simple to adopt, following that specific Sunnah — even if one's own madhhab does not emphasise it — is generally considered preferable and carries its own additional reward, without this implying the madhhab's own method was wrong or that leaving it is obligatory.
+      <span class="en" style="font-weight:600;">On following a madhhab versus a specific Sunnah practice:</span> a prayer or act of worship performed correctly according to a recognised madhhab is generally regarded as legally valid within that school's conditions; its ultimate acceptance is known to Allah alone — following a school of fiqh is a legitimate, longstanding way of practising Islam, not a deficiency. At the same time, where a specific practice is directly, authentically established from the Prophet ﷺ himself (such as Raf' al-Yadayn, detailed in the Salah tab) and is simple to adopt, following that specific Sunnah — even if one's own madhhab does not emphasise it — is generally considered preferable and carries its own additional reward, without this implying the madhhab's own method was wrong or that leaving it is obligatory.
       <div class="ur">مسلک کی پیروی بمقابلہ کسی مخصوص سنت پر عمل: کسی بھی تسلیم شدہ مسلک کے مطابق درست طریقے سے ادا کی گئی نماز یا عبادت درست اور قابلِ قبول ہے — کسی فقہی مسلک کی پیروی اسلام پر عمل کرنے کا ایک جائز، دیرینہ طریقہ ہے، کوئی کمی نہیں۔ ساتھ ہی، جہاں کوئی مخصوص عمل خود نبی ﷺ سے براہِ راست، مستند طور پر ثابت ہو (جیسے رفع الیدین، جس کی تفصیل نماز ٹیب میں دی گئی ہے) اور اسے اپنانا آسان ہو، وہاں اس مخصوص سنت پر عمل کرنا — چاہے اپنا مسلک اس پر زور نہ دے — عموماً بہتر سمجھا جاتا ہے اور اپنا اضافی اجر رکھتا ہے، بغیر اس مفہوم کے کہ مسلک کا اپنا طریقہ غلط تھا یا اسے چھوڑنا لازم ہے۔</div>
     </div>
     <div class="intro-note">
