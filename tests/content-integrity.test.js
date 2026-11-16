@@ -52,4 +52,12 @@ for (const record of registry.entries) {
 assert.ok(quality.includes('deen-cross-reference'), 'Runtime cross-reference presentation missing');
 assert.ok(quality.includes('canonicalPassages'), 'Runtime canonical cross-reference index missing');
 
+
+// Day 6: retain comparative attribution safeguards and accessible interaction styling.
+assert.ok(html.includes('data-attribution-review="fiqh"'), 'Fiqh attribution guidance missing');
+assert.ok(html.includes('data-attribution-review="aqeedah"'), 'Aqeedah attribution guidance missing');
+assert.ok(html.includes('its ultimate acceptance is known to Allah alone'), 'Legal validity / divine acceptance distinction missing');
+assert.ok(html.includes('@media(prefers-reduced-motion:reduce)'), 'Reduced-motion support missing');
+assert.ok(html.includes(':focus-visible'), 'Visible keyboard focus missing');
+
 console.log('PASS: 27 preserved sections, one-to-one navigation, references, search and source translations');
