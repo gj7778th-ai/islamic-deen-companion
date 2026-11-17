@@ -38,9 +38,9 @@ assert.ok(html.length > 600000, 'Unexpectedly large reduction in preserved sourc
 // Day 3: verify canonical duplicates against the preserved source, without removing passages.
 const registry = JSON.parse(fs.readFileSync('audit/canonical-passages.json', 'utf8'));
 assert.equal(registry.entries.length, 9, 'Nine original repeated-quotation groups expected');
-const normaliseArabic = value => value.normalize('NFKC').replace(/[\\u064b-\\u065f\\u0670\\u06d6-\\u06ed\\u0640]/g, '').replace(/\\s+/g, ' ').trim();
-const positions = [...html.matchAll(/<section\\s+class="panel(?: active)?"\\s+id="([^"]+)"/g)].map(m => ({ id: m[1], at: m.index }));
-const quotes = [...html.matchAll(/<div class="arabic(?:-sm)?">([^<]+)<\\/div>/g)].map(m => ({
+const normaliseArabic = value => value.normalize('NFKC').replace(/[\u064b-\u065f\u0670\u06d6-\u06ed\u0640]/g, '').replace(/\s+/g, ' ').trim();
+const positions = [...html.matchAll(/<section\s+class="panel(?: active)?"\s+id="([^"]+)"/g)].map(m => ({ id: m[1], at: m.index }));
+const quotes = [...html.matchAll(/<div class="arabic(?:-sm)?">([^<]+)<\/div>/g)].map(m => ({
   value: normaliseArabic(m[1]),
   section: positions.filter(p => p.at < m.index).at(-1)?.id
 }));
